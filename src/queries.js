@@ -7,7 +7,7 @@ import { gql } from "@apollo/client";
 
 
 export const FETCH_WEATHER = gql`
-	query MyQuery {
+	query MyQuery($limit: Int!, $offset: Int!) {
 		ipApi_location_Auto(lang: "en") {
 			city
 			continent
@@ -39,7 +39,7 @@ export const FETCH_WEATHER = gql`
 						icon
 						id
 						main
-						weather_mood_music {
+						weather_mood_music(limit: $limit, offset: $offset) {
 							album
 							artists
 							disc_number
@@ -56,6 +56,9 @@ export const FETCH_WEATHER = gql`
 							track_number
 							type
 							uri
+							images {
+								url
+							}
 						}
 						weather_mood_image {
 							results
