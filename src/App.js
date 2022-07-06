@@ -1,15 +1,9 @@
 import Style from "./App.module.scss";
-import { useEffect, useState } from "react";
-import { FETCH_WEATHER, GET_SPOTIFY_TOKEN } from "./queries";
+import { useState } from "react";
+import { FETCH_WEATHER} from "./queries";
 
 import { useQuery } from "@apollo/client";
 
-// Problesms:
-// the default audio tag looks hideous
-// Need to update spotify bearer token every hour...sigh
-//mobile responsive
-// Api keys hardcoded in the code...make a cloud function to fetch all api keys
-// more tracks through pagination!
 
 function App() {
 	const [imgNum, setImgNum] = useState(0);

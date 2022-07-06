@@ -69,10 +69,3 @@ export const FETCH_WEATHER = gql`
 
 
 
-export const GET_SPOTIFY_TOKEN = gql`
-	query getToken {
-		get_auth {
-			access_token
-		}
-	}
-`;
