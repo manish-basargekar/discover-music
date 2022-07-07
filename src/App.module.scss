@@ -14,7 +14,7 @@
 
 .track,
 .weatherInfo {
-    background-color: rgb(247, 247, 247);
+    background-color: rgb(255, 255, 255);
     margin-top: 1rem;
     border-radius: 6px;
 }
@@ -26,13 +26,82 @@
     --tw-ring-shadow: 0 0 #0000;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
         0 2.65546px 95px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    .head-container{
+        display: flex;
+        align-items: center;
+
+        //  img{
+        //         background-color: #f7f7f7;
+        //         border-radius: 100px;
+        //         // width: 70px;
+        //         // height: 70px;
+        //     }
+    }
+
+    .head{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+        .location{
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+
+           
+        }
+    }
+
+    .temp {
+        display: flex;
+        align-items: center;
+        // font-size: rem;
+    }
+}
+
+.tabs {
+    background-color: #fff;
+    margin-top: 1rem;
+    border-radius: 6px;
+    padding: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+
+    .tab {
+        width: max-content;
+        height: 40px;
+        border-radius: 6px;
+        background-color: #eeeeee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 1rem;
+        cursor: pointer;
+        // text-transform: uppercase;
+    }
+
+    .active {
+        background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+    }
 }
 
 .track-container {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    // gap: 0.5rem;
+    // background-color: rgba(255, 255, 255, 0.685);
+    // padding: 0 1rem;
 }
 
 .track {
@@ -99,8 +168,6 @@
     filter: blur(3px);
     position: fixed;
     // display: none;
-
-    
 }
 
 .imgControls {

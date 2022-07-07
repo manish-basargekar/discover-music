@@ -7,7 +7,7 @@ import { useQuery } from "@apollo/client";
 function App() {
 	const [imgNum, setImgNum] = useState(0);
 
-	const PAGE_SIZE = 10;
+	const PAGE_SIZE = 12;
 
 	const [page, setPage] = useState(0);
 
@@ -24,23 +24,23 @@ function App() {
 
 	if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
 
-	const handleImageNext = () => {
-		console.log(imgNum);
-		if (imgNum === 9) {
-			setImgNum(0);
-		} else {
-			setImgNum(imgNum + 1);
-		}
-	};
+	// const handleImageNext = () => {
+	// 	console.log(imgNum);
+	// 	if (imgNum === 9) {
+	// 		setImgNum(0);
+	// 	} else {
+	// 		setImgNum(imgNum + 1);
+	// 	}
+	// };
 
-	const handleImagePrev = () => {
-		console.log(imgNum);
-		if (imgNum === 0) {
-			setImgNum(9);
-		} else {
-			setImgNum(imgNum - 1);
-		}
-	};
+	// const handleImagePrev = () => {
+	// 	console.log(imgNum);
+	// 	if (imgNum === 0) {
+	// 		setImgNum(9);
+	// 	} else {
+	// 		setImgNum(imgNum - 1);
+	// 	}
+	// };
 
 	return (
 		<div className={Style.container}>
@@ -64,29 +64,59 @@ function App() {
 				{/* <button>Pay now</button> */}
 				{/* {console.log(data.ipApi_location_Auto.weather.current.weather[0].weather_mood_image.results[0].color)} */}
 				<div className={Style.weatherInfo}>
-					<img
-						src={` http://openweathermap.org/img/wn/${data.ipApi_location_Auto.weather.current.weather[0].icon}@2x.png`}
-						alt=""
-					/>
-					<h1>
-						{data.ipApi_location_Auto.city}, {data.ipApi_location_Auto.country}
-					</h1>
-					<p>
-						Feels like:
-						{data.ipApi_location_Auto.weather.current.feels_like}
-					</p>
-					<p>
-						Humidity:
-						{data.ipApi_location_Auto.weather.current.humidity}
-					</p>
-					<p>
-						Temperature:
-						{data.ipApi_location_Auto.weather.current.temp}
-					</p>
-					<p>
-						description:
-						{data.ipApi_location_Auto.weather.current.weather[0].description}
-					</p>
+					<div className={Style["head-container"]}>
+						<img
+							src={` http://openweathermap.org/img/wn/${data.ipApi_location_Auto.weather.current.weather[0].icon}@2x.png`}
+							alt=""
+						/>
+						<div className={Style.head}>
+							<div className={Style.location}>
+								<h1>
+									{data.ipApi_location_Auto.city},{" "}
+									{data.ipApi_location_Auto.country}
+								</h1>
+							</div>
+							<div className={Style.temp}>
+								<p>
+									Feels like{" "}
+									{data.ipApi_location_Auto.weather.current.feels_like}
+									°C,{" "}
+									{
+										data.ipApi_location_Auto.weather.current.weather[0]
+											.description
+									}
+									. Gentle Breeze
+								</p>
+								{/* <p>
+								{data.ipApi_location_Auto.weather.current.temp} °C
+								Feels like:
+								{data.ipApi_location_Auto.weather.current.feels_like} °C
+							</p> */}
+							</div>
+						</div>
+					</div>
+					<div className={Style.info}>
+						<p>
+							Humidity:
+							{data.ipApi_location_Auto.weather.current.humidity}
+						</p>
+						<p>
+							Temperature:
+							{data.ipApi_location_Auto.weather.current.temp}
+						</p>
+						<p>
+							description:
+							{data.ipApi_location_Auto.weather.current.weather[0].description}
+						</p>
+					</div>
+				</div>
+
+				<div className={Style.tabs}>
+					<div className={`${Style.active} ${Style.tab}`}>Based on weather</div>
+					<div className={Style.tab}>Recommended</div>
+					<div className={Style.tab}>
+						Popular in {data.ipApi_location_Auto.city}
+					</div>
 				</div>
 
 				<div className={Style["track-container"]}>
