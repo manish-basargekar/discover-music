@@ -44,11 +44,11 @@ function App() {
 
 	return (
 		<div className={Style.container}>
-			<div className={Style.imgControls}>
+			{/* <div className={Style.imgControls}>
 				<button onClick={handleImagePrev}>Previous</button>
 				<button onClick={handleImageNext}>Next</button>
-			</div>
-			<div className={Style.bg}>
+			</div> */}
+			{/* <div className={Style.bg}>
 				<img
 					src={
 						data.ipApi_location_Auto.weather.current.weather[0]
@@ -59,11 +59,15 @@ function App() {
 							.weather_mood_image.results[imgNum].alt_description
 					}
 				/>
-			</div>
+			</div> */}
 			<div className={Style.App}>
 				{/* <button>Pay now</button> */}
 				{/* {console.log(data.ipApi_location_Auto.weather.current.weather[0].weather_mood_image.results[0].color)} */}
 				<div className={Style.weatherInfo}>
+					<img
+						src={` http://openweathermap.org/img/wn/${data.ipApi_location_Auto.weather.current.weather[0].icon}@2x.png`}
+						alt=""
+					/>
 					<h1>
 						{data.ipApi_location_Auto.city}, {data.ipApi_location_Auto.country}
 					</h1>
@@ -85,20 +89,23 @@ function App() {
 					</p>
 				</div>
 
-				<div>
+				<div className={Style["track-container"]}>
 					{data.ipApi_location_Auto.weather.current.weather[0].weather_mood_music.map(
 						(track) => (
 							<div className={Style.track}>
-								<div className="left">
+								<div className={Style.trackTop}>
 									<img src={track.images[1].url} alt="" />
 									{console.log(track.images[0].url)}
 								</div>
-								<div className="right">
+								<div className={Style.trackBottom}>
 									<div className={Style.head}>
 										<div className={Style.left}>
 											<h2 className={Style.album}>{track.album}</h2>
 											<div className={Style.album}>{track.artists}</div>
 										</div>
+										<audio controls>
+											<source src={track.preview_url} />
+										</audio>
 										<div className={Style.right}>
 											<button className={Style.spotifyLink}>
 												<a
@@ -122,9 +129,6 @@ function App() {
 											</button>
 										</div>
 									</div>
-									<audio controls>
-										<source src={track.preview_url} />
-									</audio>
 								</div>
 							</div>
 						)
