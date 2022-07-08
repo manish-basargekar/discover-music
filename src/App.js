@@ -1,15 +1,18 @@
 import Style from "./App.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FETCH_WEATHER } from "./queries";
 
 import { useQuery } from "@apollo/client";
 
+
 function App() {
-	const [imgNum, setImgNum] = useState(0);
+	// const [imgNum, setImgNum] = useState(0);
 
 	const PAGE_SIZE = 12;
 
 	const [page, setPage] = useState(0);
+
+	const [weather, setWeather] = useState("");
 
 	const { loading, error, data } = useQuery(FETCH_WEATHER, {
 		variables: {
@@ -18,97 +21,73 @@ function App() {
 		},
 	});
 
+	
+
+	useEffect(() => {
+		if (loading) {
+			return;
+		} else {
+			setWeather(data.ipApi_location_Auto.weather.current.weather[0].main);
+		}
+	}, [loading]);
+
 	if (loading) {
 		return <div>Loading...</div>;
 	}
 
 	if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
 
-	// const handleImageNext = () => {
-	// 	console.log(imgNum);
-	// 	if (imgNum === 9) {
-	// 		setImgNum(0);
-	// 	} else {
-	// 		setImgNum(imgNum + 1);
-	// 	}
-	// };
 
-	// const handleImagePrev = () => {
-	// 	console.log(imgNum);
-	// 	if (imgNum === 0) {
-	// 		setImgNum(9);
-	// 	} else {
-	// 		setImgNum(imgNum - 1);
-	// 	}
-	// };
+
+	
+
+
 
 	return (
-		<div className={Style.container}>
-			{/* <div className={Style.imgControls}>
-				<button onClick={handleImagePrev}>Previous</button>
-				<button onClick={handleImageNext}>Next</button>
-			</div> */}
-			{/* <div className={Style.bg}>
-				<img
-					src={
-						data.ipApi_location_Auto.weather.current.weather[0]
-							.weather_mood_image.results[imgNum].urls.full
-					}
-					alt={
-						data.ipApi_location_Auto.weather.current.weather[0]
-							.weather_mood_image.results[imgNum].alt_description
-					}
-				/>
-			</div> */}
+		<div className={`${Style.container} ${Style[weather]}`}>
 			<div className={Style.App}>
-				{/* <button>Pay now</button> */}
 				{/* {console.log(data.ipApi_location_Auto.weather.current.weather[0].weather_mood_image.results[0].color)} */}
 				<div className={Style.weatherInfo}>
 					<div className={Style["head-container"]}>
 						<img
-							src={` http://openweathermap.org/img/wn/${data.ipApi_location_Auto.weather.current.weather[0].icon}@2x.png`}
+							src={` https://openweathermap.org/img/wn/${data.ipApi_location_Auto.weather.current.weather[0].icon}@2x.png`}
 							alt=""
 						/>
 						<div className={Style.head}>
-							<div className={Style.location}>
-								<h1>
-									{data.ipApi_location_Auto.city},{" "}
-									{data.ipApi_location_Auto.country}
-								</h1>
-							</div>
-							<div className={Style.temp}>
-								<p>
-									Feels like{" "}
-									{data.ipApi_location_Auto.weather.current.feels_like}
-									°C,{" "}
-									{
-										data.ipApi_location_Auto.weather.current.weather[0]
-											.description
-									}
-									. Gentle Breeze
-								</p>
-								{/* <p>
-								{data.ipApi_location_Auto.weather.current.temp} °C
-								Feels like:
-								{data.ipApi_location_Auto.weather.current.feels_like} °C
-							</p> */}
-							</div>
+							{/* <div className={Style.location}> */}
+							<h1>
+								{data.ipApi_location_Auto.city},{" "}
+								{data.ipApi_location_Auto.country}
+							</h1>
+							{/* </div> */}
+							{/* <div className={Style.temp}> */}
+							<p>
+								Feels like {data.ipApi_location_Auto.weather.current.feels_like}
+								°C,{" "}
+								{
+									data.ipApi_location_Auto.weather.current.weather[0]
+										.description
+								}
+								{/* . Gentle Breeze */}
+							</p>
+
+							{/* </div> */}
 						</div>
 					</div>
-					<div className={Style.info}>
+					{/* <div className={Style.info}>
 						<p>
 							Humidity:
 							{data.ipApi_location_Auto.weather.current.humidity}
 						</p>
 						<p>
 							Temperature:
-							{data.ipApi_location_Auto.weather.current.temp}
+							{data.ipApi_location_Auto.weather.current.temp}°C
 						</p>
 						<p>
 							description:
 							{data.ipApi_location_Auto.weather.current.weather[0].description}
 						</p>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={Style.tabs}>
@@ -125,7 +104,7 @@ function App() {
 							<div className={Style.track}>
 								<div className={Style.trackTop}>
 									<img src={track.images[1].url} alt="" />
-									{console.log(track.images[0].url)}
+									{/* {console.log(track.images[0].url)} */}
 								</div>
 								<div className={Style.trackBottom}>
 									<div className={Style.head}>
