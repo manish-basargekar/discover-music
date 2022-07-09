@@ -60,12 +60,25 @@ export const FETCH_WEATHER = gql`
 								url
 							}
 						}
-						weather_mood_image {
-							results
-						}
 					}
 				}
 			}
+		}
+	}
+`;
+
+
+
+
+export const GET_RECOMMENDATION = gql`
+	query MyQuery {
+		spotify_Recommendation_Sequence(
+			seed_artists: "4NHQUGzhtTLFvgF5SZesLK"
+			seed_genres: "classical"
+			seed_tracks: "0c6xIDDpzE81m2q797ordA"
+			market: "IN"
+		) {
+			tracks
 		}
 	}
 `;
