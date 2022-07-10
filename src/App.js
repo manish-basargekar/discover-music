@@ -10,6 +10,8 @@ import {
 import { useQuery } from "@apollo/client";
 import RecommendedTracks from "./components/RecommendedTracks/RecommendedTracks";
 import AvailableGenres from "./components/AvailableGenres/AvailableGenres";
+import AvailableMarkets from "./components/AvailableMarkets/AvailableMarkets";
+import Header from "./components/Header/Header";
 
 function App() {
 	// const [page, setPage] = useState(0);
@@ -213,6 +215,8 @@ function App() {
 	const [seedGenres, setSeedGenres] = useState("chill");
 	const [market, setMarket] = useState();
 
+	const [sidebarOpen, setSidebarOpen] = useState(true);
+
 	const { loading, error, data } = useQuery(GET_WEATHER_FROM_IP);
 
 	const getRecommendation = useQuery(GET_RECOMMENDATION, {
@@ -261,12 +265,19 @@ function App() {
 		getRecommendation.refetch();
 	};
 
-	let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+	
 
 	return (
 		<div className={`${Style.container} ${Style[weather]}`}>
+			<button onClick={() => setSidebarOpen(!sidebarOpen)}>Open</button>
 			<div className={Style.App}>
-				<div className={Style.presets}>
+				<div
+					className={Style.presets}
+					style={{
+						transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
+					}}
+				>
+					<button onClick={() => setSidebarOpen(!sidebarOpen)}>close</button>
 					<div className={Style.inputBox}>
 						<input type="text" placeholder="search for an artist or track" />
 						<button>search</button>
@@ -275,56 +286,27 @@ function App() {
 						<input type="text" placeholder="search for tracks" />
 						<button>search</button>
 					</div> */}
+					<AvailableGenres
+						setSeedGenres={setSeedGenres}
+						seedGenre={seedGenres}
+						data={availableGenres.data}
+						loading={availableGenres.loading}
+						error={availableGenres.error}
+					/>
 
-					<div className={Style.marketsContainer}>
-						<div className={Style.selectedContainer}>
-							Current:
-							<span className={Style.selected}>
-								{market ? regionNames.of(market) : ""}
-							</span>
-						</div>
-						<span className={Style.heading}>Available Countries</span>
-						<dir className={Style.markets}>
-							{availableMarkets.markets.map((m) => (
-								<div
-									key={m}
-									className={Style.market}
-									onClick={() => setMarket(m)}
-									style={{
-										backgroundColor: market === m ? "#69fc4b" : "",
-										color: market === m ? "#000" : "",
-									}}
-								>
-									{regionNames.of(m)}
-								</div>
-							))}
-						</dir>
-					</div>
+					<AvailableMarkets
+						market={market}
+						setMarket={setMarket}
+						availableMarkets={availableMarkets}
+					/>
 				</div>
-				<div className={Style["middle-container"]}>
-					<div className={Style.header}>
-						<div className={Style.logo}>Spotify explorer</div>
-						<button onClick={handleClick}>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="20"
-								height="20"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								// class="ai ai-ArrowCycle"
-							>
-								<path d="M22 12c0 6-4.39 10-9.806 10C7.792 22 4.24 19.665 3 16" />
-								<path d="M2 12C2 6 6.39 2 11.806 2 16.209 2 19.76 4.335 21 8" />
-								<path d="M7 17l-4-1-1 4" />
-								<path d="M17 7l4 1 1-4" />
-							</svg>
-							<span>Refresh</span>
-						</button>
-					</div>
+				<div
+					className={Style["middle-container"]}
+					style={{
+						width: sidebarOpen ? "calc(100% - 22rem)" : "100%",
+					}}
+				>
+					<Header handleClick={handleClick} />
 
 					{recommended ? (
 						<RecommendedTracks
@@ -336,14 +318,8 @@ function App() {
 					) : (
 						""
 					)}
+					<Header handleClick={handleClick} />
 				</div>
-				<AvailableGenres
-					setSeedGenres={setSeedGenres}
-					seedGenre={seedGenres}
-					data={availableGenres.data}
-					loading={availableGenres.loading}
-					error={availableGenres.error}
-				/>
 			</div>
 		</div>
 	);
