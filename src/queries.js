@@ -71,12 +71,12 @@ export const FETCH_WEATHER = gql`
 
 
 export const GET_RECOMMENDATION = gql`
-	query MyQuery {
+	query MyQuery( $seed_artists: String!, $seed_tracks: String!, $seed_genres: String!, $market: String!) {
 		spotify_Recommendation_Sequence(
-			seed_artists: "4NHQUGzhtTLFvgF5SZesLK"
-			seed_genres: "classical"
-			seed_tracks: "0c6xIDDpzE81m2q797ordA"
-			market: "IN"
+			seed_artists: $seed_artists,
+			seed_genres: $seed_genres,
+			seed_tracks: $seed_tracks,
+			market: $market
 		) {
 			tracks
 		}

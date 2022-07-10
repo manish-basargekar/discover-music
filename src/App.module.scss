@@ -146,10 +146,11 @@
 .tabs {
     background-color: #fff;
     margin-top: 1rem;
-    border-radius: 6px;
+    border-radius: 6px 6px 0 0;
     padding: 0.5rem;
     display: flex;
     gap: 0.5rem;
+    padding-bottom: 1rem;
     
 
     .search {

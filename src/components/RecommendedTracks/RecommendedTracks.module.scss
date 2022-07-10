@@ -1,6 +1,50 @@
 .track-container{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    
 
+    .album-card{
+        position: relative;
+
+        &:hover{
+            .album-card-overlay{
+               opacity: 1;
+            }
+        }
+
+        .album-card-overlay{
+            opacity: 0;
+            position: absolute;
+            bottom: 0;
+            z-index: 1298713;
+            // background-color: aqua;
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            padding: .5rem;
+            gap: .3rem;
+            button{
+                padding: .6rem .5rem;
+                cursor: pointer;
+            }
+        }
+
+        .info{
+            position: absolute;
+            bottom: .6rem;
+            right: .6rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 100px;
+            background-color: rgb(255, 255, 255);
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 1.5rem;
+        }
+    }
 
 }

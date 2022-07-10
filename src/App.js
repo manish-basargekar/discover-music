@@ -39,7 +39,7 @@ function App() {
 	const activeTabClass = recommended ? Style.active : "";
 
 	return (
-		<div className={`${Style.container} ${Style[weather]}`}>
+		<div className={`${Style.container} ${Style["weather"]}`}>
 			<div className={Style.App}>
 				<div className={Style.weatherInfo}>
 					<div className={Style["head-container"]}>
