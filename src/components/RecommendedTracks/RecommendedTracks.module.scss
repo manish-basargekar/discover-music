@@ -1,38 +1,73 @@
-.track-container{
+.track-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    
+    margin-bottom: 3rem;
 
-    .album-card{
+    .album-card {
         position: relative;
 
-        &:hover{
-            .album-card-overlay{
-               opacity: 1;
+        .albumArt {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            -webkit-transition: 0.3s ease-in-out;
+            transition: 0.3s ease-in-out;
+           
+            
+        }
+
+        &:hover {
+            .albumArt {
+            //    transform: scale(1.1);
+            transform: translateY(-10%);
+
+                // overflow: hidden;
+            }
+
+            .album-card-overlay {
+                visibility: visible;
+                // opacity: 1;
+                padding: 1rem 0.5rem;
+                transform: translate(0, 0);
             }
         }
 
-        .album-card-overlay{
-            opacity: 0;
+        .album-card-overlay {
+            // opacity: 1;
             position: absolute;
             bottom: 0;
             z-index: 1298713;
-            // background-color: aqua;
+            background-color: #121212;
             display: flex;
             width: 100%;
             flex-direction: column;
-            padding: .5rem;
-            gap: .3rem;
-            button{
-                padding: .6rem .5rem;
+            justify-content: space-between;
+
+            gap: 0.3rem;
+            transform: translateY(6.5rem);
+            transition: all 0.3s ease-in-out;
+            z-index: 0;
+            color: rgb(236, 235, 235);
+            visibility: hidden;
+            // height: 0;
+            .btn-container {
+                display: flex;
+                gap: 0.5rem;
+            }
+            button {
+                padding: 0.6rem 0.5rem;
                 cursor: pointer;
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.3rem;
             }
         }
 
-        .info{
+        .info {
             position: absolute;
-            bottom: .6rem;
-            right: .6rem;
+            bottom: 0.6rem;
+            right: 0.6rem;
             width: 2rem;
             height: 2rem;
             border-radius: 100px;
@@ -46,5 +81,4 @@
             font-size: 1.5rem;
         }
     }
-
 }
