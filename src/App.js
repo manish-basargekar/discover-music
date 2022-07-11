@@ -9,9 +9,9 @@ import {
 
 import { useQuery } from "@apollo/client";
 import RecommendedTracks from "./components/RecommendedTracks/RecommendedTracks";
-import AvailableGenres from "./components/AvailableGenres/AvailableGenres";
-import AvailableMarkets from "./components/AvailableMarkets/AvailableMarkets";
+
 import Header from "./components/Header/Header";
+import Filters from "./components/Filters/Filters";
 
 function App() {
 	// const [page, setPage] = useState(0);
@@ -265,60 +265,96 @@ function App() {
 		getRecommendation.refetch();
 	};
 
-	
-
 	return (
-		<div className={`${Style.container} ${Style[weather]}`}>
-			<button onClick={() => setSidebarOpen(!sidebarOpen)}>Open</button>
+		<div className={`${Style.container} ${Style["weather"]}`}>
 			<div className={Style.App}>
 				<div
 					className={Style.presets}
 					style={{
-						transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
+						transform: sidebarOpen ? "translateX(0)" : "translateX(87%)",
 					}}
 				>
-					<button onClick={() => setSidebarOpen(!sidebarOpen)}>close</button>
-					<div className={Style.inputBox}>
-						<input type="text" placeholder="search for an artist or track" />
-						<button>search</button>
+					<div className={Style.strip}>
+						<div className={Style.toggle}>
+							<label onClick={() => setSidebarOpen(!sidebarOpen)}>
+								{sidebarOpen ? (
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="20"
+										height="20"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										// class="ai ai-Cross"
+									>
+										<path d="M20 20L4 4m16 0L4 20" />
+									</svg>
+								) : (
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="20"
+										height="20"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										class="ai ai-TextAlignLeft"
+									>
+										<path d="M3 6h18M3 12h10M3 18h15" />
+									</svg>
+								)}
+							</label>
+						</div>
+						<div className={Style.stripText}></div>
 					</div>
-					{/* <div className={Style.inputBox}>
-						<input type="text" placeholder="search for tracks" />
-						<button>search</button>
-					</div> */}
-					<AvailableGenres
-						setSeedGenres={setSeedGenres}
-						seedGenre={seedGenres}
-						data={availableGenres.data}
-						loading={availableGenres.loading}
-						error={availableGenres.error}
-					/>
+					<div className={Style.content}>
+						{/* <div className={Style.inputBox}>
+							<input type="text" placeholder="search for an artist or track" />
+							<button>search</button>
+						</div> */}
 
-					<AvailableMarkets
-						market={market}
-						setMarket={setMarket}
-						availableMarkets={availableMarkets}
-					/>
+						<Filters
+							selected={seedGenres}
+							setFilter={setSeedGenres}
+							data={
+								availableGenres.data.spotify_Available_genres_sequence.genres
+							}
+							type={"genre"}
+						/>
+						<Filters
+							selected={market}
+							setFilter={setMarket}
+							data={availableMarkets.markets}
+							type={"market"}
+						/>
+					</div>
 				</div>
 				<div
 					className={Style["middle-container"]}
 					style={{
-						width: sidebarOpen ? "calc(100% - 22rem)" : "100%",
+						width: sidebarOpen ? "calc(100% - 20rem)" : "100%",
+						// margin: sidebarOpen? "0 auto" : "0",
 					}}
 				>
-					<Header handleClick={handleClick} />
+					<div>
+						<Header handleClick={handleClick} />
 
-					{recommended ? (
-						<RecommendedTracks
-							data={getRecommendation.data}
-							loading={getRecommendation.loading}
-							error={getRecommendation.error}
-							setSeedArtists={setSeedArtists}
-						/>
-					) : (
-						""
-					)}
-					<Header handleClick={handleClick} />
+						{recommended ? (
+							<RecommendedTracks
+								data={getRecommendation.data}
+								loading={getRecommendation.loading}
+								error={getRecommendation.error}
+								setSeedArtists={setSeedArtists}
+							/>
+						) : (
+							""
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,115 @@
+.marketsContainer {
+    margin-top: 1rem;
+    height: 40vh;
+    overflow: scroll;
+    border-top: 1px solid #303030;
+    padding: 0.3rem;
+    padding-top: 1rem;
+
+    .heading {
+        display: flex;
+        justify-content: center;
+        // background-color: #000c40;
+
+        h4 {
+            text-transform: uppercase;
+            letter-spacing: 0.1336em;
+
+            &::before {
+                content: "Filter by ";
+                opacity: 0.5;
+            }
+        }
+    }
+}
+
+.markets {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    height: 40vh;
+    overflow: scroll;
+    padding: 0.5rem;
+
+    .filter {
+        // background-color: #f1f1f1;
+        // border: 1px solid #eee;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        // font-size: 0.8rem;
+        color: #686363;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        position: relative;
+
+        display: inline-block;
+
+        color: #fff;
+        padding: 4px;
+        margin-left: 0.4rem;
+
+        &:hover {
+            background-color: #aeff00;
+            color: black;
+
+            &::before {
+                border-right-color: #aeff00;
+            }
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
+            background: #000;
+            left: -4px;
+            top: 13px;
+        }
+        &::before {
+            // border-right-color: #5100ff;
+
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-top: 16px solid transparent;
+            border-right: 10px solid #fff;
+            border-right-color: rgb(255, 255, 255);
+            border-bottom: 13px solid transparent;
+        }
+    }
+
+    .market {
+        background-color: #ff2986;
+    }
+
+    
+
+    .filterTag {
+        &::before {
+            border-right-color: #ff2986;
+        }
+    }
+
+    .genre {
+        background-color: #5100ff;
+        &::before {
+            border-right-color: #5100ff;
+        }
+    }
+
+    .marketSelected {
+        background-color: #aeff00;
+        color: #303030;
+
+        &::before {
+            border-right-color: #aeff00;
+        }
+    }
+    // flex-direction: column;
+}
