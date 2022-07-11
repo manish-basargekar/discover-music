@@ -1,7 +1,6 @@
 import Style from "./App.module.scss";
 import { useEffect, useState } from "react";
 import {
-	FETCH_WEATHER,
 	GET_RECOMMENDATION,
 	GET_WEATHER_FROM_IP,
 	GET_AVAILABLE_GENRES,
@@ -208,11 +207,9 @@ function App() {
 
 	const [recommended, setRecommended] = useState(false);
 
-	const [seedArtists, setSeedArtists] = useState(
-		"4NHQUGzhtTLFvgF5SZesLK,01pKrlgPJhm5dB4lneYAqS"
-	);
+	const [seedArtists, setSeedArtists] = useState("6eUKZXaKkcviH0Ku9w2n3V");
 	const [seedTracks, setSeedTracks] = useState("");
-	const [seedGenres, setSeedGenres] = useState("chill");
+	const [seedGenres, setSeedGenres] = useState("");
 	const [market, setMarket] = useState();
 
 	const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -266,7 +263,7 @@ function App() {
 	};
 
 	return (
-		<div className={`${Style.container} ${Style["weather"]}`}>
+		<div className={`${Style.container} ${Style[weather]}`}>
 			<div className={Style.App}>
 				<div
 					className={Style.presets}

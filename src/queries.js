@@ -20,12 +20,12 @@ export const GET_WEATHER_FROM_IP = gql`
 			countryCode
 			weather(units: metric) {
 				current {
-					feels_like
-					temp
+					# feels_like
+					# temp
 					weather {
-						description
+						# description
 						icon
-						id
+						# id
 						main
 					}
 				}

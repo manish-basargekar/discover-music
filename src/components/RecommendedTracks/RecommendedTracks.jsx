@@ -7,10 +7,10 @@ function RecommendedTracks({ data, loading, error, setSeedArtists }) {
 
 	if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
 
-	const handleClick = (a) => {
-		console.log(a);
-		setSeedArtists(a.artists[0].id);
-	};
+	// const handleClick = (a) => {
+	// 	console.log(a);
+	// 	setSeedArtists(a.artists[0].id);
+	// };
 
 	return (
 		<div>

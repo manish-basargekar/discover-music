@@ -9,11 +9,11 @@ const Filters = ({
 	let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
 	return (
-		<div className={Style.marketsContainer}>
+		<div className={Style.filtersContainer}>
 			<span className={Style.heading}>
 				<h4 className={Style["heading-text"]}> {type}</h4>
 			</span>
-			<dir className={Style.markets}>
+			<dir className={Style.filters}>
 				{data.map((m) => (
 					<div
 						key={m}
