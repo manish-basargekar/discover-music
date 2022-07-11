@@ -5,8 +5,20 @@ const Filters = ({
 	data,
 	setFilter,
 	type,
+	loading,
+	error,
 }) => {
 	let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
+
+	if (error) {
+		return <pre>{JSON.stringify(error, null, 2)}</pre>;
+	}
+	
+
 
 	return (
 		<div className={Style.filtersContainer}>

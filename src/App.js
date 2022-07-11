@@ -209,7 +209,7 @@ function App() {
 
 	const [seedArtists, setSeedArtists] = useState("6eUKZXaKkcviH0Ku9w2n3V");
 	const [seedTracks, setSeedTracks] = useState("");
-	const [seedGenres, setSeedGenres] = useState("");
+	const [seedGenres, setSeedGenres] = useState("acoustic");
 	const [market, setMarket] = useState();
 
 	const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -261,6 +261,8 @@ function App() {
 	const handleClick = () => {
 		getRecommendation.refetch();
 	};
+
+	let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
 	return (
 		<div className={`${Style.container} ${Style[weather]}`}>
@@ -322,6 +324,8 @@ function App() {
 								availableGenres.data.spotify_Available_genres_sequence.genres
 							}
 							type={"genre"}
+							loading={availableGenres.loading}
+							error={availableGenres.error}
 						/>
 						<Filters
 							selected={market}
@@ -341,12 +345,19 @@ function App() {
 					<div>
 						<Header handleClick={handleClick} />
 
+						<div className="selected">
+							<h4>Seed track: {seedTracks}</h4>
+							<h4>seed genre: {seedGenres}</h4>
+							<h4>seed artist: {seedArtists}</h4>
+							<h4>country : { market ? regionNames.of(market) : ""}</h4>
+						</div>
 						{recommended ? (
 							<RecommendedTracks
 								data={getRecommendation.data}
 								loading={getRecommendation.loading}
 								error={getRecommendation.error}
 								setSeedArtists={setSeedArtists}
+								setSeedTracks={setSeedTracks}
 							/>
 						) : (
 							""

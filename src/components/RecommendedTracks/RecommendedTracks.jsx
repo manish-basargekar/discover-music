@@ -1,6 +1,12 @@
 import Style from "./RecommendedTracks.module.scss";
 
-function RecommendedTracks({ data, loading, error, setSeedArtists }) {
+function RecommendedTracks({
+	data,
+	loading,
+	error,
+	setSeedArtists,
+	setSeedTracks,
+}) {
 	if (loading) {
 		return <div>Loading...</div>;
 	}
@@ -39,10 +45,19 @@ function RecommendedTracks({ data, loading, error, setSeedArtists }) {
 
 						<div className={Style["album-card-overlay"]}>
 							<div className={Style.artists}>
-								<h3>{a.album.name}</h3>
+								<h3
+									onClick={() => setSeedTracks(a.id)}
+									className={Style.artistName}
+								>
+									{a.album.name}
+								</h3>
 								{a.artists.map((artist) => {
 									return (
-										<span key={artist.id} className={Style.artistName} onClick={() => setSeedArtists(artist.id)}>
+										<span
+											key={artist.id}
+											className={Style.artistName}
+											onClick={() => setSeedArtists(artist.id)}
+										>
 											{artist.name}{" "}
 											{artist.id === a.artists[a.artists.length - 1].id
 												? " "
