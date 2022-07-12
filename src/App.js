@@ -11,6 +11,8 @@ import RecommendedTracks from "./components/RecommendedTracks/RecommendedTracks"
 
 import Header from "./components/Header/Header";
 import Filters from "./components/Filters/Filters";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function App() {
 	// const [page, setPage] = useState(0);
@@ -253,13 +255,36 @@ function App() {
 		}
 	}, [loading]);
 
+	useEffect(() => {
+		if (window.innerWidth < 1025) {
+			setSidebarOpen(false);
+		}
+	}, [window.innerWidth]);
+
+
+	//click outside the sidebar closes it
+	useEffect(() => {
+		const handleClickOutside = (e) => {
+			if (sidebarOpen && e.target.id !== "sidebar") {
+				setSidebarOpen(false);
+			}
+		}
+		document.addEventListener("click", handleClickOutside);
+		return () => {
+			document.removeEventListener("click", handleClickOutside);
+		}
+	}, [sidebarOpen]);
+
+
 	if (loading) {
-		return <div>Loading...</div>;
+		return <Skeleton />;
 	}
 
 	if (error) {
 		return <pre>{JSON.stringify(error, null, 2)}</pre>;
 	}
+
+	//if window size is less than 500px, close sidebar
 
 	const handleClick = () => {
 		getRecommendation.refetch();
@@ -275,6 +300,7 @@ function App() {
 					style={{
 						transform: sidebarOpen ? "translateX(0)" : "translateX(88%)",
 					}}
+					id="sidebar"
 				>
 					<div className={Style.strip}>
 						<div className={Style.toggle}>
@@ -302,10 +328,10 @@ function App() {
 										viewBox="0 0 24 24"
 										fill="none"
 										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										class="ai ai-TextAlignLeft"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										// class="ai ai-TextAlignLeft"
 									>
 										<path d="M3 6h18M3 12h10M3 18h15" />
 									</svg>

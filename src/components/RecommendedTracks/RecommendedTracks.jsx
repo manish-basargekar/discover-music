@@ -88,23 +88,6 @@ function RecommendedTracks({
 										</svg>
 										<span>Listen on Spotify</span>
 									</a>{" "}
-									{/* <svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="20"
-										height="20"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="1.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										// class="ai ai-Info"
-									>
-										<circle cx="12" cy="12" r="10" />
-										<path d="M12 7h.01" />
-										<path d="M10 11h2v5" />
-										<path d="M10 16h4" />
-									</svg> */}
 								</button>
 							</div>
 						</div>
