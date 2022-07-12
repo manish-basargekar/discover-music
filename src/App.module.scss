@@ -69,12 +69,47 @@
             flex-direction: column;
             justify-content: space-between;
 
-            .searchContainer{
+            .sig {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #aeff00;
+                // padding: 1rem;
+                height: 50px;
+                color: #000;
+
+                a {
+                    color: #5100ff;
+                }
+            }
+
+            .searchContainer {
                 overflow: scroll;
                 height: 20vh;
+                position: absolute;
+                background-color: #303030;
+                margin-top: 2rem;
+                z-index: 1324123;
+                padding: 1rem;
+                // width: 100%;
 
-                .searchResults{
-                    margin-top: .4rem;
+                .searchResults {
+                    padding: 0.5rem 0;
+                    border-top: 1px solid #000;
+
+                    .addArtist,
+                    .addTrack {
+                        display: flex;
+                        align-items: center;
+                        padding: 0.2rem;
+                        justify-content: space-between;
+                        margin-top: 0.3rem;
+                        background-color: #000;
+                        button {
+                            padding: 0.2rem 0.7rem;
+                        }
+                    }
                 }
             }
 
@@ -161,9 +196,20 @@
         .inputBox {
             display: flex;
             justify-content: space-between;
+            // padding: .3rem;
 
             input {
                 flex: 1;
+            }
+            button {
+                display: flex;
+                align-items: center;
+                // gap: 0.4rem;
+                padding: 0.4rem 0.6rem;
+                border: 2px solid rgb(224, 219, 219);
+                background-color: #eceaeb;
+                // border-radius: 6px;
+                cursor: pointer;
             }
         }
     }
@@ -257,4 +303,3 @@
         margin-top: 0;
     }
 }
-

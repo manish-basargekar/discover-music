@@ -3,7 +3,7 @@ import Style from "./Header.module.scss"
 const Header = ({handleClick}) => {
   return (
 		<div className={Style.header}>
-			<div className={Style.logo}>breeze music</div>
+			<div className={Style.logo}>discover music</div>
 			<button onClick={handleClick}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
