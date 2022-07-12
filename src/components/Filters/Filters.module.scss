@@ -21,7 +21,7 @@
             font-weight: 400;
 
             &::before {
-                content: "Filter by ";
+                content: "Recommend by ";
                 opacity: 0.5;
             }
         }
@@ -33,7 +33,7 @@
     justify-content: flex-end;
     flex-wrap: wrap;
     gap: 0.6rem;
-    margin-top: 1rem;
+    // margin-top: .3rem;
     height: 30vh;
     overflow-y: scroll;
     overflow-x: hidden;

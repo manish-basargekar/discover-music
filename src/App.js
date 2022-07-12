@@ -32,6 +32,7 @@ function App() {
 
 	const [search, setSearch] = useState("");
 
+	const [searchContainer, setSearchContainer] = useState(false);
 	const { loading, error, data } = useQuery(GET_WEATHER_FROM_IP);
 
 	const getRecommendation = useQuery(GET_RECOMMENDATION, {
@@ -53,9 +54,6 @@ function App() {
 			q: search,
 		},
 	});
-
-	// if (loading) return <div>Loading...</div>;
-	// if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
 
 	useEffect(() => {
 		if (loading || availableMarketsQuery.loading) {
@@ -179,28 +177,39 @@ function App() {
 								type="text"
 								placeholder="search for an artist or track"
 								onChange={(e) => setSearch(e.target.value)}
+								value={search}
 							/>
-							{!searchState.called && (
-								<button
-									onClick={() => searchQuery()}
-									className={Style.searchButton}
-								>
-									search
-								</button>
-							)}
+							{/* {!searchState.called && ( */}
+							<button
+								onClick={() => {
+									setSearchContainer(true);
+									searchQuery();
+								}}
+								className={Style.searchButton}
+							>
+								search
+							</button>
+							{/* )} */}
 						</div>
-						<div className={Style.searchContainer}>
+						<div
+							className={Style.searchContainer}
+							style={{
+								display: searchContainer ? "block" : "none",
+							}}
+						>
 							{searchState.loading
 								? "loading"
 								: searchState.data?.spotify_Search_Sequence.map((a) => (
 										<div className={Style.searchResults}>
-											{console.log(a)}
+											{/* {console.log(a)} */}
 											<div className={Style.addArtist}>
 												<span>{a.artists}</span>
 												<button
 													onClick={() => {
 														setArtistName(a.artists);
 														setSeedArtists(a.artistID);
+														setSearchContainer(false);
+														// setSearch("");
 													}}
 												>
 													add
@@ -212,6 +221,8 @@ function App() {
 													onClick={() => {
 														setTrackName(a.name);
 														setSeedTracks(a.id);
+														setSearchContainer(false);
+														// setSearch("");
 													}}
 												>
 													add
@@ -220,7 +231,7 @@ function App() {
 										</div>
 								  ))}
 						</div>
-						<h4 className={Style["sidebar-heading"]}>current</h4>
+						<h4 className={Style["sidebar-heading"]}>current seeds</h4>
 						<div className={Style.seeds}>
 							<div className={Style.seedBoxLeft}>
 								<div className={`${Style.seed} ${Style.seedTrack}`}>
@@ -274,6 +285,16 @@ function App() {
 						) : (
 							""
 						)}
+						<div className={Style.sig}>
+							<span>
+								Discover music: made by{" "}
+								<a
+									href="http://www.mnsh.me"
+									target="_blank"
+									rel="noopener noreferrer"
+								>Manish</a>
+							</span>
+						</div>
 					</div>
 				</div>
 				<div
