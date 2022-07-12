@@ -319,16 +319,16 @@ function App() {
 							<input type="text" placeholder="search for an artist or track" />
 							<button>search</button>
 						</div> */}
-							<h4 className={Style["sidebar-heading"]}>current</h4>
+						<h4 className={Style["sidebar-heading"]}>current</h4>
 						<div className={Style.seeds}>
 							<div className={Style.seedBoxLeft}>
 								<div className={`${Style.seed} ${Style.seedTrack}`}>
 									<h4 className={Style.label}>track</h4>
 									<div className={Style.seedText}>
-										{trackName ? trackName : "Cick on track name on album cover to select"}
+										{trackName ? trackName : "Select track name on album cover"}
 									</div>
 								</div>
-								<div className={`${Style.seed} ${Style.seedGenre}`} >
+								<div className={`${Style.seed} ${Style.seedGenre}`}>
 									<h4 className={Style.label}>Genre</h4>
 									<div className={Style.seedText}>
 										{seedGenres ? seedGenres : " "}
@@ -339,12 +339,16 @@ function App() {
 								<div className={`${Style.seed} ${Style.seedArtist}`}>
 									<h4 className={Style.label}>Artist</h4>
 									<div className={Style.seedText}>
-										{artistName ? artistName : "Cick on artist name on album cover to select"}
+										{artistName
+											? artistName
+											: "Select Artist name on album cover"}
 									</div>
 								</div>
 								<div className={`${Style.seed} ${Style.seedCountry}`}>
 									<h4 className={Style.label}>Country</h4>
-									<div className={Style.seedText}>{market ? regionNames.of(market) : " "}</div>
+									<div className={Style.seedText}>
+										{market ? regionNames.of(market) : " "}
+									</div>
 								</div>
 							</div>
 						</div>
