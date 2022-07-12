@@ -10,26 +10,22 @@ export const GET_AVAILABLE_GENRES = gql`
 `;
 
 
+export const GET_AVAILABLE_MARKETS = gql`
+	query MyQuery {
+		spotify_Available_Markets_Sequence {
+			markets
+		}
+	}
+`;
+
+
 
 
 export const GET_WEATHER_FROM_IP = gql`
 	query MyQuery {
 		ipApi_location_Auto {
-			# city
-			# country
 			countryCode
-			weather(units: metric) {
-				current {
-					# feels_like
-					# temp
-					weather {
-						# description
-						# icon
-						# id
-						main
-					}
-				}
-			}
+
 		}
 	}
 `;

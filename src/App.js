@@ -4,6 +4,7 @@ import {
 	GET_RECOMMENDATION,
 	GET_WEATHER_FROM_IP,
 	GET_AVAILABLE_GENRES,
+	GET_AVAILABLE_MARKETS,
 } from "./queries";
 
 import { useQuery } from "@apollo/client";
@@ -11,201 +12,198 @@ import RecommendedTracks from "./components/RecommendedTracks/RecommendedTracks"
 
 import Header from "./components/Header/Header";
 import Filters from "./components/Filters/Filters";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 function App() {
 	// const [page, setPage] = useState(0);
+	// const availableMarkets = {
+	// 	markets: [
+	// 		"AD",
+	// 		"AE",
+	// 		"AG",
+	// 		"AL",
+	// 		"AM",
+	// 		"AO",
+	// 		"AR",
+	// 		"AT",
+	// 		"AU",
+	// 		"AZ",
+	// 		"BA",
+	// 		"BB",
+	// 		"BD",
+	// 		"BE",
+	// 		"BF",
+	// 		"BG",
+	// 		"BH",
+	// 		"BI",
+	// 		"BJ",
+	// 		"BN",
+	// 		"BO",
+	// 		"BR",
+	// 		"BS",
+	// 		"BT",
+	// 		"BW",
+	// 		"BY",
+	// 		"BZ",
+	// 		"CA",
+	// 		"CD",
+	// 		"CG",
+	// 		"CH",
+	// 		"CI",
+	// 		"CL",
+	// 		"CM",
+	// 		"CO",
+	// 		"CR",
+	// 		"CV",
+	// 		"CW",
+	// 		"CY",
+	// 		"CZ",
+	// 		"DE",
+	// 		"DJ",
+	// 		"DK",
+	// 		"DM",
+	// 		"DO",
+	// 		"DZ",
+	// 		"EC",
+	// 		"EE",
+	// 		"EG",
+	// 		"ES",
+	// 		"FI",
+	// 		"FJ",
+	// 		"FM",
+	// 		"FR",
+	// 		"GA",
+	// 		"GB",
+	// 		"GD",
+	// 		"GE",
+	// 		"GH",
+	// 		"GM",
+	// 		"GN",
+	// 		"GQ",
+	// 		"GR",
+	// 		"GT",
+	// 		"GW",
+	// 		"GY",
+	// 		"HK",
+	// 		"HN",
+	// 		"HR",
+	// 		"HT",
+	// 		"HU",
+	// 		"ID",
+	// 		"IE",
+	// 		"IL",
+	// 		"IN",
+	// 		"IQ",
+	// 		"IS",
+	// 		"IT",
+	// 		"JM",
+	// 		"JO",
+	// 		"JP",
+	// 		"KE",
+	// 		"KG",
+	// 		"KH",
+	// 		"KI",
+	// 		"KM",
+	// 		"KN",
+	// 		"KR",
+	// 		"KW",
+	// 		"KZ",
+	// 		"LA",
+	// 		"LB",
+	// 		"LC",
+	// 		"LI",
+	// 		"LK",
+	// 		"LR",
+	// 		"LS",
+	// 		"LT",
+	// 		"LU",
+	// 		"LV",
+	// 		"LY",
+	// 		"MA",
+	// 		"MC",
+	// 		"MD",
+	// 		"ME",
+	// 		"MG",
+	// 		"MH",
+	// 		"MK",
+	// 		"ML",
+	// 		"MN",
+	// 		"MO",
+	// 		"MR",
+	// 		"MT",
+	// 		"MU",
+	// 		"MV",
+	// 		"MW",
+	// 		"MX",
+	// 		"MY",
+	// 		"MZ",
+	// 		"NA",
+	// 		"NE",
+	// 		"NG",
+	// 		"NI",
+	// 		"NL",
+	// 		"NO",
+	// 		"NP",
+	// 		"NR",
+	// 		"NZ",
+	// 		"OM",
+	// 		"PA",
+	// 		"PE",
+	// 		"PG",
+	// 		"PH",
+	// 		"PK",
+	// 		"PL",
+	// 		"PS",
+	// 		"PT",
+	// 		"PW",
+	// 		"PY",
+	// 		"QA",
+	// 		"RO",
+	// 		"RS",
+	// 		"RW",
+	// 		"SA",
+	// 		"SB",
+	// 		"SC",
+	// 		"SE",
+	// 		"SG",
+	// 		"SI",
+	// 		"SK",
+	// 		"SL",
+	// 		"SM",
+	// 		"SN",
+	// 		"SR",
+	// 		"ST",
+	// 		"SV",
+	// 		"SZ",
+	// 		"TD",
+	// 		"TG",
+	// 		"TH",
+	// 		"TJ",
+	// 		"TL",
+	// 		"TN",
+	// 		"TO",
+	// 		"TR",
+	// 		"TT",
+	// 		"TV",
+	// 		"TW",
+	// 		"TZ",
+	// 		"UA",
+	// 		"UG",
+	// 		"US",
+	// 		"UY",
+	// 		"UZ",
+	// 		"VC",
+	// 		"VE",
+	// 		"VN",
+	// 		"VU",
+	// 		"WS",
+	// 		"XK",
+	// 		"ZA",
+	// 		"ZM",
+	// 		"ZW",
+	// 	],
+	// };
 
-	const availableMarkets = {
-		markets: [
-			"AD",
-			"AE",
-			"AG",
-			"AL",
-			"AM",
-			"AO",
-			"AR",
-			"AT",
-			"AU",
-			"AZ",
-			"BA",
-			"BB",
-			"BD",
-			"BE",
-			"BF",
-			"BG",
-			"BH",
-			"BI",
-			"BJ",
-			"BN",
-			"BO",
-			"BR",
-			"BS",
-			"BT",
-			"BW",
-			"BY",
-			"BZ",
-			"CA",
-			"CD",
-			"CG",
-			"CH",
-			"CI",
-			"CL",
-			"CM",
-			"CO",
-			"CR",
-			"CV",
-			"CW",
-			"CY",
-			"CZ",
-			"DE",
-			"DJ",
-			"DK",
-			"DM",
-			"DO",
-			"DZ",
-			"EC",
-			"EE",
-			"EG",
-			"ES",
-			"FI",
-			"FJ",
-			"FM",
-			"FR",
-			"GA",
-			"GB",
-			"GD",
-			"GE",
-			"GH",
-			"GM",
-			"GN",
-			"GQ",
-			"GR",
-			"GT",
-			"GW",
-			"GY",
-			"HK",
-			"HN",
-			"HR",
-			"HT",
-			"HU",
-			"ID",
-			"IE",
-			"IL",
-			"IN",
-			"IQ",
-			"IS",
-			"IT",
-			"JM",
-			"JO",
-			"JP",
-			"KE",
-			"KG",
-			"KH",
-			"KI",
-			"KM",
-			"KN",
-			"KR",
-			"KW",
-			"KZ",
-			"LA",
-			"LB",
-			"LC",
-			"LI",
-			"LK",
-			"LR",
-			"LS",
-			"LT",
-			"LU",
-			"LV",
-			"LY",
-			"MA",
-			"MC",
-			"MD",
-			"ME",
-			"MG",
-			"MH",
-			"MK",
-			"ML",
-			"MN",
-			"MO",
-			"MR",
-			"MT",
-			"MU",
-			"MV",
-			"MW",
-			"MX",
-			"MY",
-			"MZ",
-			"NA",
-			"NE",
-			"NG",
-			"NI",
-			"NL",
-			"NO",
-			"NP",
-			"NR",
-			"NZ",
-			"OM",
-			"PA",
-			"PE",
-			"PG",
-			"PH",
-			"PK",
-			"PL",
-			"PS",
-			"PT",
-			"PW",
-			"PY",
-			"QA",
-			"RO",
-			"RS",
-			"RW",
-			"SA",
-			"SB",
-			"SC",
-			"SE",
-			"SG",
-			"SI",
-			"SK",
-			"SL",
-			"SM",
-			"SN",
-			"SR",
-			"ST",
-			"SV",
-			"SZ",
-			"TD",
-			"TG",
-			"TH",
-			"TJ",
-			"TL",
-			"TN",
-			"TO",
-			"TR",
-			"TT",
-			"TV",
-			"TW",
-			"TZ",
-			"UA",
-			"UG",
-			"US",
-			"UY",
-			"UZ",
-			"VC",
-			"VE",
-			"VN",
-			"VU",
-			"WS",
-			"XK",
-			"ZA",
-			"ZM",
-			"ZW",
-		],
-	};
-
-	const [weather, setWeather] = useState("");
+	// const [weather, setWeather] = useState("");
 
 	const [recommended, setRecommended] = useState(false);
 
@@ -213,6 +211,8 @@ function App() {
 	const [seedTracks, setSeedTracks] = useState("");
 	const [seedGenres, setSeedGenres] = useState("acoustic");
 	const [market, setMarket] = useState();
+
+	const [allMarkets, setAllMarkets] = useState();
 
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -233,58 +233,63 @@ function App() {
 
 	const availableGenres = useQuery(GET_AVAILABLE_GENRES);
 
+	const availableMarketsQuery = useQuery(GET_AVAILABLE_MARKETS);
+
 	// if (loading) return <div>Loading...</div>;
 	// if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
 
 	useEffect(() => {
-		if (loading) {
+		if (loading || availableMarketsQuery.loading) {
 			return;
 		} else {
-			setWeather(data.ipApi_location_Auto.weather.current.weather[0].main);
+			// setWeather(data.ipApi_location_Auto.weather.current.weather[0].main);
 			setRecommended(true);
-
+			// console.log(availableMarkets)
+			setAllMarkets(
+				availableMarketsQuery.data.spotify_Available_Markets_Sequence.markets
+			);
 			if (
-				availableMarkets.markets.includes(data.ipApi_location_Auto.countryCode)
+				availableMarketsQuery.data.spotify_Available_Markets_Sequence.markets.includes(
+					data.ipApi_location_Auto.countryCode
+				)
 			) {
 				setMarket(data.ipApi_location_Auto.countryCode);
 			} else {
 				setMarket("US");
 			}
 
-			console.log(data.ipApi_location_Auto.countryCode);
+			// console.log(data.ipApi_location_Auto.countryCode);
 		}
-	}, [loading]);
+	}, [loading, availableMarketsQuery.loading]);
 
 	useEffect(() => {
 		if (window.innerWidth < 1025) {
 			setSidebarOpen(false);
 		}
-	}, [window.innerWidth]);
-
+	}, []);
 
 	//click outside the sidebar closes it
-	useEffect(() => {
-		const handleClickOutside = (e) => {
-			if (sidebarOpen && e.target.id !== "sidebar") {
-				setSidebarOpen(false);
-			}
-		}
-		document.addEventListener("click", handleClickOutside);
-		return () => {
-			document.removeEventListener("click", handleClickOutside);
-		}
-	}, [sidebarOpen]);
+	// useEffect(() => {
+	// 	const handleClickOutside = (e) => {
+	// 		if (sidebarOpen && e.target.id !== "sidebar") {
+	// 			setSidebarOpen(false);
+	// 		}
+	// 	};
+	// 	document.addEventListener("click", handleClickOutside);
+	// 	return () => {
+	// 		document.removeEventListener("click", handleClickOutside);
+	// 	};
+	// }, [sidebarOpen]);
 
-
-	if (loading) {
-		return <Skeleton />;
+	if (loading || availableGenres.loading || availableMarketsQuery.loading) {
+		return <div>Loading...</div>;
 	}
 
 	if (error) {
 		return <pre>{JSON.stringify(error, null, 2)}</pre>;
 	}
 
-	//if window size is less than 500px, close sidebar
+
 
 	const handleClick = () => {
 		getRecommendation.refetch();
@@ -293,7 +298,8 @@ function App() {
 	let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
 	return (
-		<div className={`${Style.container} ${Style[weather]}`}>
+		<div className={`${Style.container} ${Style["Clear"]}`}>
+			{/* {console.log(availableGenres.data)} */}
 			<div className={Style.App}>
 				<div
 					className={Style.presets}
@@ -389,12 +395,16 @@ function App() {
 							loading={availableGenres.loading}
 							error={availableGenres.error}
 						/>
-						<Filters
-							selected={market}
-							setFilter={setMarket}
-							data={availableMarkets.markets}
-							type={"market"}
-						/>
+						{allMarkets ? (
+							<Filters
+								selected={market}
+								setFilter={setMarket}
+								data={allMarkets}
+								type={"market"}
+							/>
+						) : (
+							""
+						)}
 					</div>
 				</div>
 				<div
