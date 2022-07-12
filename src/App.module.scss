@@ -8,7 +8,7 @@
 
     .presets {
         // min-height: 100vh;
-        width: 25vw;
+        // width: 25vw;
 
         // padding: 1rem;
         border-radius: 4px;
@@ -29,7 +29,7 @@
         // align-items: flex-start;
         // justify-content: center;
 
-        width: 22rem;
+        width: 25rem;
         height: 100vh;
         background-color: #f7f6f3;
         position: fixed;
@@ -68,6 +68,70 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+
+            .sidebar-heading {
+                text-align: center;
+                text-transform: uppercase;
+                margin-top: 0.7rem;
+                text-transform: uppercase;
+                letter-spacing: 0.0336em;
+                font-weight: 400;
+                // opacity: .8;
+            }
+
+            .seeds {
+                // padding: 1rem;
+                display: flex;
+                // flex-direction: column;
+                justify-content: center;
+                // align-items: center;
+                width: 100%;
+                // background-color: #132010;
+                // color: black;
+                // width: max-content;
+                // padding: 0.3rem 0.6rem;
+                border-radius: 4px;
+                // gap: 1rem;
+
+                .seedGenre,
+                .seedCountry {
+                    border-top: 1px solid #303030;
+                }
+
+                .seedGenre {
+                    .seedText {
+                        &::first-letter {
+                            text-transform: capitalize;
+                        }
+                    }
+                }
+
+                .seedBoxLeft {
+                    align-self: flex-end;
+                    text-align: right;
+                    // padding-right: 1rem;
+                    border-right: 1px solid #303030;
+                    // border-top: 1px solid #303030;
+                    // border-top: none;
+
+                    // :nth-child(2){
+                    //     border-top: 1px solid #303030;
+                    // }
+                }
+                .seed {
+                    // border-top: 1px solid #303030;
+                    padding: 1rem;
+                    h4 {
+                        text-transform: uppercase;
+                        letter-spacing: 0.1336em;
+                        font-weight: 400;
+                        opacity: 0.5;
+                    }
+                    .seedText {
+                        // margin-top: .3rem;
+                    }
+                }
+            }
             // gap: 1rem;
         }
 
@@ -169,7 +233,7 @@
     // background-color: rgb(255, 113, 113);
 }
 
-.middle-container {
+.main-container {
     // min-width: 100%;
     // width: 60%;
     // margin: auto;

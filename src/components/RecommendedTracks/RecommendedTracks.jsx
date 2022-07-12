@@ -6,6 +6,8 @@ function RecommendedTracks({
 	error,
 	setSeedArtists,
 	setSeedTracks,
+	setArtistName,
+	setTrackName,
 }) {
 	if (loading) {
 		return <div>Loading...</div>;
@@ -24,13 +26,6 @@ function RecommendedTracks({
 				{console.log(data.spotify_Recommendation_Sequence.tracks)}
 				{data.spotify_Recommendation_Sequence.tracks.map((a) => (
 					<div className={Style["album-card"]} key={a.id}>
-						{/* <div className={Style.setArtist}>
-							{a.artists.map((b) => (
-								<h4 key={b.id} onClick={() => setSeedArtists(b.id)}>
-									{b.name}
-								</h4>
-							))}
-						</div> */}
 						<div
 							style={{
 								overflow: "hidden",
@@ -46,25 +41,33 @@ function RecommendedTracks({
 						<div className={Style["album-card-overlay"]}>
 							<div className={Style.artists}>
 								<h3
-									onClick={() => setSeedTracks(a.id)}
-									className={Style.artistName}
+									onClick={() => {
+										setTrackName(a.name);
+										setSeedTracks(a.id);
+									}}
+									className={Style.trackName}
 								>
-									{a.album.name}
+									{a.name}
 								</h3>
-								{a.artists.map((artist) => {
-									return (
-										<span
-											key={artist.id}
-											className={Style.artistName}
-											onClick={() => setSeedArtists(artist.id)}
-										>
-											{artist.name}{" "}
-											{artist.id === a.artists[a.artists.length - 1].id
-												? " "
-												: ",  "}
-										</span>
-									);
-								})}
+								<div>
+									{a.artists.map((artist) => {
+										return (
+											<span
+												key={artist.id}
+												className={Style.artistName}
+												onClick={() => {
+													setSeedArtists(artist.id);
+													setArtistName(artist.name);
+												}}
+											>
+												{artist.name}{" "}
+												{artist.id === a.artists[a.artists.length - 1].id
+													? " "
+													: ",  "}
+											</span>
+										);
+									})}
+								</div>
 							</div>
 							<div className={Style["btn-container"]}>
 								<button className={Style.listen}>

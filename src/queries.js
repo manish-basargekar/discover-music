@@ -15,8 +15,8 @@ export const GET_AVAILABLE_GENRES = gql`
 export const GET_WEATHER_FROM_IP = gql`
 	query MyQuery {
 		ipApi_location_Auto {
-			city
-			country
+			# city
+			# country
 			countryCode
 			weather(units: metric) {
 				current {
@@ -24,7 +24,7 @@ export const GET_WEATHER_FROM_IP = gql`
 					# temp
 					weather {
 						# description
-						icon
+						# icon
 						# id
 						main
 					}

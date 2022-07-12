@@ -214,6 +214,9 @@ function App() {
 
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 
+	const [artistName, setArtistName] = useState("");
+	const [trackName, setTrackName] = useState("");
+
 	const { loading, error, data } = useQuery(GET_WEATHER_FROM_IP);
 
 	const getRecommendation = useQuery(GET_RECOMMENDATION, {
@@ -270,7 +273,7 @@ function App() {
 				<div
 					className={Style.presets}
 					style={{
-						transform: sidebarOpen ? "translateX(0)" : "translateX(87%)",
+						transform: sidebarOpen ? "translateX(0)" : "translateX(88%)",
 					}}
 				>
 					<div className={Style.strip}>
@@ -316,6 +319,35 @@ function App() {
 							<input type="text" placeholder="search for an artist or track" />
 							<button>search</button>
 						</div> */}
+							<h4 className={Style["sidebar-heading"]}>current</h4>
+						<div className={Style.seeds}>
+							<div className={Style.seedBoxLeft}>
+								<div className={`${Style.seed} ${Style.seedTrack}`}>
+									<h4 className={Style.label}>track</h4>
+									<div className={Style.seedText}>
+										{trackName ? trackName : "Cick on track name on album cover to select"}
+									</div>
+								</div>
+								<div className={`${Style.seed} ${Style.seedGenre}`} >
+									<h4 className={Style.label}>Genre</h4>
+									<div className={Style.seedText}>
+										{seedGenres ? seedGenres : " "}
+									</div>
+								</div>
+							</div>
+							<div>
+								<div className={`${Style.seed} ${Style.seedArtist}`}>
+									<h4 className={Style.label}>Artist</h4>
+									<div className={Style.seedText}>
+										{artistName ? artistName : "Cick on artist name on album cover to select"}
+									</div>
+								</div>
+								<div className={`${Style.seed} ${Style.seedCountry}`}>
+									<h4 className={Style.label}>Country</h4>
+									<div className={Style.seedText}>{market ? regionNames.of(market) : " "}</div>
+								</div>
+							</div>
+						</div>
 
 						<Filters
 							selected={seedGenres}
@@ -336,21 +368,15 @@ function App() {
 					</div>
 				</div>
 				<div
-					className={Style["middle-container"]}
+					className={Style["main-container"]}
 					style={{
-						width: sidebarOpen ? "calc(100% - 20rem)" : "100%",
+						width: sidebarOpen ? "calc(100% - 25rem)" : "100%",
 						// margin: sidebarOpen? "0 auto" : "0",
 					}}
 				>
 					<div>
 						<Header handleClick={handleClick} />
 
-						<div className="selected">
-							<h4>Seed track: {seedTracks}</h4>
-							<h4>seed genre: {seedGenres}</h4>
-							<h4>seed artist: {seedArtists}</h4>
-							<h4>country : { market ? regionNames.of(market) : ""}</h4>
-						</div>
 						{recommended ? (
 							<RecommendedTracks
 								data={getRecommendation.data}
@@ -358,6 +384,8 @@ function App() {
 								error={getRecommendation.error}
 								setSeedArtists={setSeedArtists}
 								setSeedTracks={setSeedTracks}
+								setArtistName={setArtistName}
+								setTrackName={setTrackName}
 							/>
 						) : (
 							""
