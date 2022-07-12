@@ -5,9 +5,10 @@ import {
 	GET_WEATHER_FROM_IP,
 	GET_AVAILABLE_GENRES,
 	GET_AVAILABLE_MARKETS,
+	GET_SEARCH,
 } from "./queries";
 
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import RecommendedTracks from "./components/RecommendedTracks/RecommendedTracks";
 
 import Header from "./components/Header/Header";
@@ -15,8 +16,6 @@ import Filters from "./components/Filters/Filters";
 import Loading from "./components/Loading/Loading";
 
 function App() {
-
-
 	const [recommended, setRecommended] = useState(false);
 
 	const [seedArtists, setSeedArtists] = useState("6eUKZXaKkcviH0Ku9w2n3V");
@@ -30,6 +29,8 @@ function App() {
 
 	const [artistName, setArtistName] = useState("");
 	const [trackName, setTrackName] = useState("");
+
+	const [search, setSearch] = useState("");
 
 	const { loading, error, data } = useQuery(GET_WEATHER_FROM_IP);
 
@@ -46,6 +47,12 @@ function App() {
 	const availableGenres = useQuery(GET_AVAILABLE_GENRES);
 
 	const availableMarketsQuery = useQuery(GET_AVAILABLE_MARKETS);
+
+	const [searchQuery, searchState] = useLazyQuery(GET_SEARCH, {
+		variables: {
+			q: search,
+		},
+	});
 
 	// if (loading) return <div>Loading...</div>;
 	// if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
@@ -107,9 +114,19 @@ function App() {
 
 	let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
+	// const handleSearch = (e) => {
+	// 	e.preventDefault();
+	// 	console.log(search);
+
+	// 	if (searchQuery.loading) return;
+
+	// 	console.log(searchQuery.data);
+	// };
+
 	return (
 		<div className={`${Style.container} ${Style["Clearg"]}`}>
 			{/* {console.log(availableGenres.data)} */}
+			{/* {console.log(searchState.data)} */}
 			<div className={Style.App}>
 				<div
 					className={Style.presets}
@@ -157,10 +174,52 @@ function App() {
 						<div className={Style.stripText}></div>
 					</div>
 					<div className={Style.content}>
-						{/* <div className={Style.inputBox}>
-							<input type="text" placeholder="search for an artist or track" />
-							<button>search</button>
-						</div> */}
+						<div className={Style.inputBox}>
+							<input
+								type="text"
+								placeholder="search for an artist or track"
+								onChange={(e) => setSearch(e.target.value)}
+							/>
+							{!searchState.called && (
+								<button
+									onClick={() => searchQuery()}
+									className={Style.searchButton}
+								>
+									search
+								</button>
+							)}
+						</div>
+						<div className={Style.searchContainer}>
+							{searchState.loading
+								? "loading"
+								: searchState.data?.spotify_Search_Sequence.map((a) => (
+										<div className={Style.searchResults}>
+											{console.log(a)}
+											<div className={Style.addArtist}>
+												<span>{a.artists}</span>
+												<button
+													onClick={() => {
+														setArtistName(a.artists);
+														setSeedArtists(a.artistID);
+													}}
+												>
+													add
+												</button>
+											</div>
+											<div className={Style.addTrack}>
+												<span>{a.name}</span>
+												<button
+													onClick={() => {
+														setTrackName(a.name);
+														setSeedTracks(a.id);
+													}}
+												>
+													add
+												</button>
+											</div>
+										</div>
+								  ))}
+						</div>
 						<h4 className={Style["sidebar-heading"]}>current</h4>
 						<div className={Style.seeds}>
 							<div className={Style.seedBoxLeft}>

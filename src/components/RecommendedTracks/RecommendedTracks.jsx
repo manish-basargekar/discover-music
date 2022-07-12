@@ -24,7 +24,7 @@ function RecommendedTracks({
 	return (
 		<div>
 			<div className={Style["track-container"]}>
-				{console.log(data.spotify_Recommendation_Sequence.tracks)}
+				{/* {console.log(data.spotify_Recommendation_Sequence.tracks)} */}
 				{data.spotify_Recommendation_Sequence.tracks.map((a) => (
 					<div className={Style["album-card"]} key={a.id}>
 						<div

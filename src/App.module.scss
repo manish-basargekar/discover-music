@@ -69,6 +69,15 @@
             flex-direction: column;
             justify-content: space-between;
 
+            .searchContainer{
+                overflow: scroll;
+                height: 20vh;
+
+                .searchResults{
+                    margin-top: .4rem;
+                }
+            }
+
             .sidebar-heading {
                 text-align: center;
                 text-transform: uppercase;
@@ -151,6 +160,7 @@
 
         .inputBox {
             display: flex;
+            justify-content: space-between;
 
             input {
                 flex: 1;
