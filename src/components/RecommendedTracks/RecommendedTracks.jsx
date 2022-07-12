@@ -1,3 +1,4 @@
+import Loading from "../Loading/Loading";
 import Style from "./RecommendedTracks.module.scss";
 
 function RecommendedTracks({
@@ -10,7 +11,7 @@ function RecommendedTracks({
 	setTrackName,
 }) {
 	if (loading) {
-		return <div>Loading...</div>;
+		return <Loading />;
 	}
 
 	if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
