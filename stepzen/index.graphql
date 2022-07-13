@@ -1,0 +1,969 @@
+schema {
+	query: Query
+}
+
+type Spotify_Auth {
+	access_token: String!
+}
+
+type Query {
+	get_auth: Spotify_Auth
+		@rest(
+			method: POST
+			contenttype: "application/x-www-form-urlencoded"
+			endpoint: "https://accounts.spotify.com/api/token?grant_type=client_credentials&client_id=$client_id&client_secret=$client_secret"
+			configuration: "spotify_config"
+		)
+}
+
+
+type Query {
+	spotify_Search_Sequence(q: String!, limit: Int, offset: Int): [Spotify_Track]
+		@sequence(
+			steps: [
+				{ query: "get_auth" }
+				{
+					query: "spotify_Search"
+					arguments: [
+						{ name: "q", argument: "q" }
+						{ name: "limit", argument: "limit" }
+						{ name: "offset", argument: "offset" }
+					]
+				}
+			]
+		)
+}
+
+
+type Query {
+	spotify_Recommendation_Sequence(
+		seed_tracks: String,
+		seed_genres: String,
+		seed_artists: String,
+		market: String!
+	): Spotify_Recommendations
+		@sequence(
+			steps: [
+				{ query: "get_auth" }
+				{
+					query: "spotify_Recommendations"
+					arguments: [
+						{ name: "seed_tracks", argument: "seed_tracks" }
+						{ name: "seed_genres", argument: "seed_genres" }
+						{ name: "seed_artists", argument: "seed_artists" }
+						{ name: "market", argument: "market" }
+					]
+				}
+			]
+		)
+}
+
+
+
+type Query {
+	spotify_Available_Markets_Sequence: spotify_Available_markets
+		@sequence(
+			steps: [
+				{ query: "get_auth" }
+				{
+					query: "spotify_Available_Markets"
+				}
+			]
+		)
+}
+
+type Query{
+	spotify_Available_Markets(access_token: String!): spotify_Available_markets
+		@rest(
+			method: GET
+			endpoint: "https://api.spotify.com/v1/markets"
+			headers: [{ name: "Authorization", value: "Bearer $access_token" }]
+		)
+}
+
+
+type Query {
+	spotify_Available_genres_sequence: genres
+		@sequence(
+			steps: [
+				{ query: "get_auth" }
+				{
+					query: "spotify_Available_genres"
+				}
+			]
+		)
+}
+
+type Query {
+	spotify_Available_genres(access_token: String!): genres
+		@rest(
+			endpoint: "https://api.spotify.com/v1/recommendations/available-genre-seeds"
+			headers: [{ name: "Authorization", value: "Bearer $access_token" }]
+		)
+}
+
+
+
+type Query {
+	ipApi_location(ip: String!, lang: String! = "en"): IpApi_Location
+		@rest(
+			endpoint: "http://ip-api.com/json/$ip?fields=64745471&lang=$lang"
+			setters: [{ field: "ip", path: "query" }]
+		)
+	ipApi_stepzen_request: IpApi_StepZen_Request @connector(type: "request")
+	ipApi_location_Auto(lang: String! = "en"): IpApi_Location
+		@sequence(
+			steps: [
+				{ query: "ipApi_stepzen_request" }
+				{
+					query: "ipApi_location"
+					arguments: [{ name: "ip", field: "clientIp" }]
+				}
+			]
+		)
+
+	spotify_Recommendations(
+		access_token: String!
+		seed_artists: String!
+		seed_genres: String!
+		market: String
+		seed_tracks: String!
+	): 
+	Spotify_Recommendations
+		@rest(
+			endpoint: "https://api.spotify.com/v1/recommendations?limit=30&market=$market&seed_artists=$seed_artists&seed_genres=$seed_genres&seed_tracks=$seed_tracks"
+			headers: [{ name: "Authorization", value: "Bearer $access_token" }]
+		)
+
+	spotify_Search(
+		access_token: String!
+		q: String
+		limit: Int
+		offset: Int
+	): [Spotify_Track]
+		@rest(
+			endpoint: "https://api.spotify.com/v1/search?q=$q&type=track&limit=$limit&offset=$offset"
+			headers: [{ name: "Authorization", value: "Bearer $access_token" }]
+			setters: [
+				{ field: "album", path: "tracks.items[].album.name" }
+				{ field: "type", path: "tracks.items[].type" }
+				{ field: "uri", path: "tracks.items[].uri" }
+				{ field: "href", path: "tracks.href" }
+				{ field: "name", path: "tracks.items[].name" }
+				{ field: "is_local", path: "tracks.items[].is_local" }
+				{ field: "popularity", path: "tracks.items[].popularity" }
+				{ field: "disc_number", path: "tracks.items[].disc_number" }
+				{ field: "explicit", path: "tracks.items[].explicit" }
+				{ field: "preview_url", path: "tracks.items[].preview_url" }
+				{ field: "track_number", path: "tracks.items[].track_number" }
+				{ field: "artists", path: "tracks.items[].artists[].name" }
+				{ field: "duration_ms", path: "tracks.items[].duration_ms" }
+				{ field: "external_ids", path: "tracks.items[].external_ids.isrc" }
+				{ field: "external_urls", path: "tracks.items[].external_urls.spotify" }
+				{ field: "id", path: "tracks.items[].id" }
+				{ field: "images", path: "tracks.items[].album.images" }
+				{ field: "artistID", path: "tracks.items[].artists[].id" }
+			]
+		)
+}
+
+
+type spotify_Available_markets {
+	markets: JSON
+}
+
+
+type genres{
+	genres: JSON
+}
+
+type IpApi_Location {
+	status: String
+	message: String
+	continent: String
+	continentCode: String
+	country: String
+	countryCode: String
+	region: String
+	regionName: String
+	city: String
+	district: String
+	zip: String
+	lat: Float
+	lon: Float
+	timezone: String
+	offset: Int
+	currency: String
+	isp: String
+	org: String
+	as: String
+	reserve: String
+	mobile: Boolean
+	proxy: Boolean
+	hosting: Boolean
+	ip: String
+
+}
+
+type IpApi_StepZen_Request {
+	clientIp: String
+}
+
+
+
+
+type Spotify_ExternalUrl {
+	spotify: String
+}
+
+type Spotify_ExternalId {
+	ean: String
+	isrc: String
+	upc: String
+}
+
+type Spotify_Albums_List_Artist {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Copyright {
+	text: String
+	type: String
+}
+
+type Spotify_Image {
+	height: Int
+	url: String
+	width: Int
+}
+
+type Spotify_Albums_List_Artist_G10 {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Albums_List_Item {
+	artists: [Spotify_Albums_List_Artist_G10]
+	available_markets: JSON
+	disc_number: Int
+	duration_ms: Int
+	explicit: Boolean
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	is_local: Boolean
+	name: String
+	preview_url: String
+	track_number: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Albums_List_Tracks {
+	href: String
+	items: [Spotify_Albums_List_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_Albums_List_Album {
+	album_type: String
+	artists: [Spotify_Albums_List_Artist]
+	available_markets: JSON
+	copyrights: [Spotify_Copyright]
+	external_ids: Spotify_ExternalId
+	external_urls: Spotify_ExternalUrl
+	genres: JSON
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	label: String
+	name: String
+	popularity: Int
+	release_date: String
+	release_date_precision: String
+	total_tracks: Int
+	tracks: Spotify_Albums_List_Tracks
+	type: String
+	uri: String
+}
+
+type Spotify_Albums {
+	albums: [Spotify_Albums_List_Album]
+}
+
+type Spotify_Albums_By_Id_Artist {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Albums_By_Id_Artist_G6 {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Albums_By_Id_Item {
+	artists: [Spotify_Albums_By_Id_Artist_G6]
+	available_markets: JSON
+	disc_number: Int
+	duration_ms: Int
+	explicit: Boolean
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	is_local: Boolean
+	name: String
+	preview_url: String
+	track_number: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Albums_By_Id_Tracks {
+	href: String
+	items: [Spotify_Albums_By_Id_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_Album {
+	album_type: String
+	artists: [Spotify_Albums_By_Id_Artist]
+	available_markets: JSON
+	copyrights: [Spotify_Copyright]
+	external_ids: Spotify_ExternalId
+	external_urls: Spotify_ExternalUrl
+	genres: JSON
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	label: String
+	name: String
+	popularity: Int
+	release_date: String
+	release_date_precision: String
+	total_tracks: Int
+	tracks: Spotify_Albums_By_Id_Tracks
+	type: String
+	uri: String
+}
+
+type Spotify_Album_Tracks_By__Album_Id_Artist {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Album_Tracks_By__Album_Id_Item {
+	artists: [Spotify_Album_Tracks_By__Album_Id_Artist]
+	available_markets: JSON
+	disc_number: Int
+	duration_ms: Int
+	explicit: Boolean
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	is_local: Boolean
+	name: String
+	preview_url: String
+	track_number: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Album_Tracks {
+	href: String
+	items: [Spotify_Album_Tracks_By__Album_Id_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_Artists_List_Followers {
+	href: String
+	total: Int
+}
+
+type Spotify_Artists_List_Artist {
+	external_urls: Spotify_ExternalUrl
+	followers: Spotify_Artists_List_Followers
+	genres: String
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	popularity: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Artists {
+	artists: [Spotify_Artists_List_Artist]
+}
+
+type Spotify_Artist_Followers {
+	href: String
+	total: Int
+}
+
+type Spotify_Artist {
+	external_urls: Spotify_ExternalUrl
+	followers: Spotify_Artist_Followers
+	genres: String
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	popularity: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Artist_Top_Tracks_Artist {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Artist_Top_Tracks_Album {
+	album_type: String
+	artists: [Spotify_Artist_Top_Tracks_Artist]
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	release_date: String
+	release_date_precision: String
+	total_tracks: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Artist_Top_Tracks_Artist_G2 {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Artist_Top_Tracks_Track {
+	album: Spotify_Artist_Top_Tracks_Album
+	artists: [Spotify_Artist_Top_Tracks_Artist_G2]
+	disc_number: Int
+	duration_ms: Int
+	explicit: Boolean
+	external_ids: Spotify_ExternalId
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	is_local: Boolean
+	is_playable: Boolean
+	name: String
+	popularity: Int
+	preview_url: String
+	track_number: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Tracks {
+	tracks: [Spotify_Artist_Top_Tracks_Track]
+}
+
+type Spotify_Artist_Related_Artists_Followers {
+	href: String
+	total: Int
+}
+
+type Spotify_Artist_Related_Artists_Artist {
+	external_urls: Spotify_ExternalUrl
+	followers: Spotify_Artist_Related_Artists_Followers
+	genres: [String]
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	popularity: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Related_Artists {
+	artists: [Spotify_Artist_Related_Artists_Artist]
+}
+
+type Spotify_Artist_Albums_Artist {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Artist_Albums_Item {
+	album_group: String
+	album_type: String
+	artists: [Spotify_Artist_Albums_Artist]
+	available_markets: [String]
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	release_date: String
+	release_date_precision: String
+	total_tracks: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Artist_Albums {
+	href: String
+	items: [Spotify_Artist_Albums_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_New_Releases_Artist {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_New_Releases_Item {
+	album_type: String
+	artists: [Spotify_New_Releases_Artist]
+	available_markets: [String]
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	release_date: String
+	release_date_precision: String
+	total_tracks: Int
+	type: String
+	uri: String
+}
+
+type Spotify_New_Releases_Albums {
+	href: String
+	items: [Spotify_New_Releases_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_New_Releases {
+	albums: Spotify_New_Releases_Albums
+}
+
+type Spotify_Featured_Playlists_Owner {
+	display_name: String
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	type: String
+	uri: String
+}
+
+type Spotify_Featured_Playlists_Tracks {
+	href: String
+	total: Int
+}
+
+type Spotify_Featured_Playlists_Item {
+	collaborative: Boolean
+	description: String
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	owner: Spotify_Featured_Playlists_Owner
+	primary_color: String
+	public: String
+	snapshot_id: ID!
+	tracks: Spotify_Featured_Playlists_Tracks
+	type: String
+	uri: String
+}
+
+type Spotify_Featured_Playlists_Playlists {
+	href: String
+	items: [Spotify_Featured_Playlists_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_Featured_Playlists {
+	message: String
+	playlists: Spotify_Featured_Playlists_Playlists
+}
+
+type Spotify_Categories_Item {
+	href: String
+	icons: [Spotify_Image]
+	id: ID!
+	name: String
+}
+
+type Spotify_Categories_Categories {
+	href: String
+	items: [Spotify_Categories_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_Categories {
+	categories: Spotify_Categories_Categories
+}
+
+type Spotify_Categories_By_Id {
+	href: String
+	icons: [Spotify_Image]
+	id: ID!
+	name: String
+}
+
+type Spotify_Recommendations_Seed {
+	afterFilteringSize: Int
+	afterRelinkingSize: Int
+	href: String
+	id: ID!
+	initialPoolSize: Int
+	type: String
+}
+
+type Spotify_Recommendations {
+	# seeds: [Spotify_Recommendations_Seed]
+	tracks: JSON
+}
+
+type Spotify_Search_Followers {
+	href: String
+	total: Int
+}
+
+type Spotify_Search_Item {
+	external_urls: Spotify_ExternalUrl
+	followers: Spotify_Search_Followers
+	genres: JSON
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	popularity: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Search_Artists {
+	href: String
+	items: [Spotify_Search_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_Search {
+	artists: Spotify_Search_Artists
+}
+
+type Spotify_Playlists_By_Category_Owner {
+	display_name: String
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	type: String
+	uri: String
+}
+
+type Spotify_Playlists_By_Category_Tracks {
+	href: String
+	total: Int
+}
+
+type Spotify_Playlists_By_Category_Item {
+	collaborative: Boolean
+	description: String
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	images: [Spotify_Image]
+	name: String
+	owner: Spotify_Playlists_By_Category_Owner
+	primary_color: String
+	public: String
+	snapshot_id: ID!
+	tracks: Spotify_Playlists_By_Category_Tracks
+	type: String
+	uri: String
+}
+
+type Spotify_Playlists_By_Category_Playlists {
+	href: String
+	items: [Spotify_Playlists_By_Category_Item]
+	limit: Int
+	next: String
+	offset: Int
+	previous: String
+	total: Int
+}
+
+type Spotify_Playlists_For_Category {
+	playlists: Spotify_Playlists_By_Category_Playlists
+}
+
+type Spotify_Tracks_Get_List {
+	tracks: JSON
+}
+
+type Spotify_Get_A_Track_Artist {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Get_A_Track_Album {
+	album_type: String
+	artists: String
+	available_markets: String
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	images: String
+	name: String
+	release_date: String
+	release_date_precision: String
+	total_tracks: Int
+	type: String
+	uri: String
+}
+
+type Spotify_Get_A_Track_Artist_G6 {
+	external_urls: Spotify_ExternalUrl
+	href: String
+	id: ID!
+	name: String
+	type: String
+	uri: String
+}
+
+type Spotify_Track {
+	album: String
+	artists: String
+	disc_number: Int
+	duration_ms: Int
+	explicit: Boolean
+	external_ids: String
+	external_urls: String
+	href: String
+	id: ID!
+	is_local: Boolean
+	name: String
+	popularity: Int
+	preview_url: String
+	track_number: Int
+	type: String
+	uri: String
+
+	images: [Spotify_Image]
+	artistID: String
+}
+
+type Spotify_Get_Audio_Features_For_List_Of_Tracks_Audio_Feature {
+	acousticness: Float
+	analysis_url: String
+	danceability: Float
+	duration_ms: Int
+	energy: Float
+	id: ID!
+	instrumentalness: Float
+	key: Int
+	liveness: Float
+	loudness: Float
+	mode: Int
+	speechiness: Float
+	tempo: Float
+	time_signature: Int
+	track_href: String
+	type: String
+	uri: String
+	valence: Float
+}
+
+type Spotify_Track_Audio_Features {
+	audio_features: [Spotify_Get_Audio_Features_For_List_Of_Tracks_Audio_Feature]
+}
+
+type Spotify_Audio_Features_For_A_Track {
+	acousticness: Float
+	analysis_url: String
+	danceability: Float
+	duration_ms: Int
+	energy: Float
+	id: ID!
+	instrumentalness: Float
+	key: Int
+	liveness: Float
+	loudness: Float
+	mode: Int
+	speechiness: Float
+	tempo: Float
+	time_signature: Int
+	track_href: String
+	type: String
+	uri: String
+	valence: Float
+}
+
+type Spotify_Get_Audio_Analysis_For_One_Track_Bar {
+	confidence: Float
+	duration: Float
+	start: Float
+}
+
+type Spotify_Get_Audio_Analysis_For_One_Track_Beat {
+	confidence: Float
+	duration: Float
+	start: Float
+}
+
+type Spotify_Get_Audio_Analysis_For_One_Track_Meta {
+	analysis_time: Float
+	analyzer_version: String
+	detailed_status: String
+	input_process: String
+	platform: String
+	status_code: Int
+	timestamp: Int
+}
+
+type Spotify_Get_Audio_Analysis_For_One_Track_Section {
+	confidence: Int
+	duration: Float
+	key: Int
+	key_confidence: Float
+	loudness: Float
+	mode: Int
+	mode_confidence: Float
+	start: Int
+	tempo: Float
+	tempo_confidence: Float
+	time_signature: Int
+	time_signature_confidence: Int
+}
+
+type Spotify_Get_Audio_Analysis_For_One_Track_Segment {
+	confidence: Int
+	duration: Float
+	loudness_end: Int
+	loudness_max: Int
+	loudness_max_time: Int
+	loudness_start: Int
+	pitches: [Float]
+	start: Int
+	timbre: [Float]
+}
+
+type Spotify_Get_Audio_Analysis_For_One_Track_Tatum {
+	confidence: Float
+	duration: Float
+	start: Float
+}
+
+type Spotify_Get_Audio_Analysis_For_One_Track_Track {
+	analysis_channels: Int
+	analysis_sample_rate: Int
+	code_version: Float
+	codestring: String
+	duration: Float
+	echoprint_version: Float
+	echoprintstring: String
+	end_of_fade_in: Float
+	key: Int
+	key_confidence: Float
+	loudness: Float
+	mode: Int
+	mode_confidence: Float
+	num_samples: Int
+	offset_seconds: Int
+	rhythm_version: Int
+	rhythmstring: String
+	sample_md5: String
+	start_of_fade_out: Float
+	synch_version: Int
+	synchstring: String
+	tempo: Float
+	tempo_confidence: Float
+	time_signature: Int
+	time_signature_confidence: Int
+	window_seconds: Int
+}
+
+type Spotify_Audio_Analysis_For_A_Track {
+	bars: [Spotify_Get_Audio_Analysis_For_One_Track_Bar]
+	beats: [Spotify_Get_Audio_Analysis_For_One_Track_Beat]
+	meta: Spotify_Get_Audio_Analysis_For_One_Track_Meta
+	sections: [Spotify_Get_Audio_Analysis_For_One_Track_Section]
+	segments: [Spotify_Get_Audio_Analysis_For_One_Track_Segment]
+	tatums: [Spotify_Get_Audio_Analysis_For_One_Track_Tatum]
+	track: Spotify_Get_Audio_Analysis_For_One_Track_Track
+}
+
+

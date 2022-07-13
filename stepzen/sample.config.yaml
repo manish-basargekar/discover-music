@@ -1,0 +1,6 @@
+configurationset:
+  - configuration:
+      name: spotify_config
+      client_id: 
+      client_secret: 
+      buffer: A BASE-64 ENCODED ID:SECRET HASH
