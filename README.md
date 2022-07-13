@@ -1,8 +1,14 @@
-Breeze: Music recommendation based on weather
+Discover music: Music discovery made simple. Powered by Spotify
+
+
+# Getting started
+
+
+
 
 # Goals :
 
-- To make a interface specifically for discovering music based on user selected seeds(like tracks, genre, country, artist)
+- To make an interface for discovering music based on user selected seeds(like tracks, genre, country, artist)
 
 # Approach:
 
@@ -13,24 +19,27 @@ Breeze: Music recommendation based on weather
 
 # Functionalities:
 
-This allows the app to bypass annoying pop-up about using location data. 
+
 
 
 - spotify search api to search for music.
-- recommendation by genre
-- recommendation by country
-- recommendation by track and country
+- recommend by genre
+- recommend by country
+- recommend by track
 
 # Outcomes
 
-a react app which fetch the all the relevant data using stepzen graphQL backend
+- react web app to tweak and find music.
 
 # Functionalities
 
-- Automatically fetch your location/weather and provides relevant music recommendation
+- Tweak you recommendations to find similar music based on country, artist, genre or track
 
 # Links
 
-- [Demo](https://github.com/8mn/discover-music)
-- [GraphQL endpoint(stepzen)](https://github.com/8mn/breeze-graphql)
+- [Demo](https://discover-music.vercel.app/)
+- [GraphQL endpoint(stepzen)](https://github.com/8mn/discover-music-graphql)
 - [Frontend](https://github.com/8mn/breeze)
+
+
+

@@ -61,7 +61,9 @@ function App() {
 		} else {
 			// setWeather(data.ipApi_location_Auto.weather.current.weather[0].main);
 			setRecommended(true);
-			// console.log(availableMarkets)
+			// console.log(
+			// 	availableMarketsQuery
+			// );
 			setAllMarkets(
 				availableMarketsQuery.data.spotify_Available_Markets_Sequence.markets
 			);
@@ -85,14 +87,14 @@ function App() {
 		}
 	}, []);
 
-	//closesidebar on click outside of it
+	
 
 	if (loading || availableGenres.loading || availableMarketsQuery.loading) {
 		return <Loading />;
 	}
 
-	if (error) {
-		return <pre>{JSON.stringify(error, null, 2)}</pre>;
+	if (error || availableGenres.error || availableMarketsQuery.error) {
+		return <pre>{JSON.stringify(error , null, 2)}</pre>;
 	}
 
 	const handleClick = () => {
@@ -101,14 +103,7 @@ function App() {
 
 	let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
-	// const handleSearch = (e) => {
-	// 	e.preventDefault();
-	// 	console.log(search);
 
-	// 	if (searchQuery.loading) return;
-
-	// 	console.log(searchQuery.data);
-	// };
 
 	return (
 		<div className={`${Style.container} ${Style["Clearg"]}`}>
@@ -266,6 +261,7 @@ function App() {
 						<Filters
 							selected={seedGenres}
 							setFilter={setSeedGenres}
+
 							data={
 								availableGenres.data.spotify_Available_genres_sequence.genres
 							}
