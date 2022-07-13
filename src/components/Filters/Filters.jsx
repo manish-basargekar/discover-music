@@ -7,6 +7,7 @@ const Filters = ({
 	type,
 	loading,
 	error,
+	setSidebarOpen,
 }) => {
 	let regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
@@ -17,8 +18,13 @@ const Filters = ({
 	if (error) {
 		return <pre>{JSON.stringify(error, null, 2)}</pre>;
 	}
-	
 
+	const handleClick = (m) => {
+		setFilter(m);
+		if (window.innerWidth < 1025) {
+			setSidebarOpen(false);
+		}
+	};
 
 	return (
 		<div className={Style.filtersContainer}>
@@ -32,7 +38,7 @@ const Filters = ({
 						className={`${Style.filter} ${Style.filterTag} ${
 							selected === m ? Style.marketSelected : " "
 						} ${Style[type]}`}
-						onClick={() => setFilter(m)}
+						onClick={() => handleClick(m)}
 					>
 						{type === "market" ? regionNames.of(m) : m}
 

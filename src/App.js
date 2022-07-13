@@ -85,18 +85,7 @@ function App() {
 		}
 	}, []);
 
-	//click outside the sidebar closes it
-	// useEffect(() => {
-	// 	const handleClickOutside = (e) => {
-	// 		if (sidebarOpen && e.target.id !== "sidebar") {
-	// 			setSidebarOpen(false);
-	// 		}
-	// 	};
-	// 	document.addEventListener("click", handleClickOutside);
-	// 	return () => {
-	// 		document.removeEventListener("click", handleClickOutside);
-	// 	};
-	// }, [sidebarOpen]);
+	//closesidebar on click outside of it
 
 	if (loading || availableGenres.loading || availableMarketsQuery.loading) {
 		return <Loading />;
@@ -129,7 +118,7 @@ function App() {
 				<div
 					className={Style.presets}
 					style={{
-						transform: sidebarOpen ? "translateX(0)" : "translateX(88%)",
+						transform: sidebarOpen ? "translateX(0)" : "translateX(89%)",
 					}}
 					id="sidebar"
 				>
@@ -172,7 +161,14 @@ function App() {
 						<div className={Style.stripText}></div>
 					</div>
 					<div className={Style.content}>
-						<div className={Style.inputBox}>
+						<form
+							className={Style.inputBox}
+							onSubmit={(e) => {
+								e.preventDefault()
+								setSearchContainer(true);
+								searchQuery();
+							}}
+						>
 							<input
 								type="text"
 								placeholder="search for an artist or track"
@@ -180,56 +176,58 @@ function App() {
 								value={search}
 							/>
 							{/* {!searchState.called && ( */}
-							<button
-								onClick={() => {
-									setSearchContainer(true);
-									searchQuery();
-								}}
-								className={Style.searchButton}
-							>
+							<button type="submit" className={Style.searchButton}>
 								search
 							</button>
 							{/* )} */}
-						</div>
+						</form>
 						<div
 							className={Style.searchContainer}
 							style={{
 								display: searchContainer ? "block" : "none",
 							}}
 						>
-							{searchState.loading
-								? "loading"
-								: searchState.data?.spotify_Search_Sequence.map((a) => (
-										<div className={Style.searchResults}>
-											{/* {console.log(a)} */}
-											<div className={Style.addArtist}>
-												<span>{a.artists}</span>
-												<button
-													onClick={() => {
-														setArtistName(a.artists);
-														setSeedArtists(a.artistID);
-														setSearchContainer(false);
-														// setSearch("");
-													}}
-												>
-													add
-												</button>
-											</div>
-											<div className={Style.addTrack}>
-												<span>{a.name}</span>
-												<button
-													onClick={() => {
-														setTrackName(a.name);
-														setSeedTracks(a.id);
-														setSearchContainer(false);
-														// setSearch("");
-													}}
-												>
-													add
-												</button>
-											</div>
+							{searchState.loading ? (
+								<Loading />
+							) : (
+								searchState.data?.spotify_Search_Sequence.map((a) => (
+									<div className={Style.searchResults}>
+										{/* {console.log(a)} */}
+										<div className={Style.addArtist}>
+											<span>{a.artists}</span>
+											<button
+												onClick={() => {
+													setArtistName(a.artists);
+													setSeedArtists(a.artistID);
+													setSearchContainer(false);
+													if (window.innerWidth < 1025) {
+														setSidebarOpen(false);
+													}
+													setSearch("");
+												}}
+											>
+												add
+											</button>
 										</div>
-								  ))}
+										<div className={Style.addTrack}>
+											<span>{a.name}</span>
+											<button
+												onClick={() => {
+													setTrackName(a.name);
+													setSeedTracks(a.id);
+													setSearchContainer(false);
+													setSearch("");
+													if (window.innerWidth < 1025) {
+														setSidebarOpen(false);
+													}
+												}}
+											>
+												add
+											</button>
+										</div>
+									</div>
+								))
+							)}
 						</div>
 						<h4 className={Style["sidebar-heading"]}>current seeds</h4>
 						<div className={Style.seeds}>
@@ -274,6 +272,7 @@ function App() {
 							type={"genre"}
 							loading={availableGenres.loading}
 							error={availableGenres.error}
+							setSidebarOpen={setSidebarOpen}
 						/>
 						{allMarkets ? (
 							<Filters
@@ -281,6 +280,7 @@ function App() {
 								setFilter={setMarket}
 								data={allMarkets}
 								type={"market"}
+								setSidebarOpen={setSidebarOpen}
 							/>
 						) : (
 							""
@@ -292,7 +292,9 @@ function App() {
 									href="http://www.mnsh.me"
 									target="_blank"
 									rel="noopener noreferrer"
-								>Manish</a>
+								>
+									Manish
+								</a>
 							</span>
 						</div>
 					</div>

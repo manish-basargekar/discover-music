@@ -84,11 +84,15 @@
                 }
             }
 
+            input {
+                padding-left: 0.4rem;
+            }
+
             .searchContainer {
                 overflow: scroll;
                 height: 20vh;
                 position: absolute;
-                background-color: #303030;
+                background-color: #e7e7e7;
                 margin-top: 2rem;
                 z-index: 1324123;
                 padding: 1rem;
@@ -105,7 +109,8 @@
                         padding: 0.2rem;
                         justify-content: space-between;
                         margin-top: 0.3rem;
-                        background-color: #000;
+                        background-color: rgb(211, 211, 211);
+                        color: #161616;
                         button {
                             padding: 0.2rem 0.7rem;
                         }
