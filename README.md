@@ -1,9 +1,39 @@
-Discover music: Music discovery made simple. Powered by Spotify
+
+# Discover music
+Music discovery made simple. Powered by Spotify
+
+# Live demo
+[Demo](https://discover-music.vercel.app/)
+
+# Screenshot
+![Desktop - 1](https://user-images.githubusercontent.com/64839201/178653682-3052d0b3-8ade-4711-a189-3fbc762f90f1.png)
+
+
 
 
 # Getting started
+For starting the app in your machine, open the terminal and follow these commands:
 
+git clone the repo
+```
+git clone https://github.com/8mn/discover-music.git
+```
 
+cd into working directory
+```
+cd discover-music
+```
+
+Install dependencies
+```
+npm install
+```
+
+For starting react app:
+```
+npm run start
+```
+open http://localhost:3000 in browser to access the app
 
 
 # Goals :
@@ -18,22 +48,17 @@ Discover music: Music discovery made simple. Powered by Spotify
 
 
 # Functionalities:
-
-
-
-
 - spotify search api to search for music.
-- recommend by genre
-- recommend by country
-- recommend by track
+- Tweak you recommendations to find similar music based on country, artist, genre or track
 
 # Outcomes
 
 - react web app to tweak and find music.
 
-# Functionalities
-
-- Tweak you recommendations to find similar music based on country, artist, genre or track
+# What's next for Discover music
+- Adding more variable to discover music like tempo, acoustics, danceability etc.
+- Adding your favorite music to playlist
+- Recommendation presets based on mood, weather
 
 # Links
 
@@ -41,5 +66,11 @@ Discover music: Music discovery made simple. Powered by Spotify
 - [GraphQL endpoint(stepzen)](https://github.com/8mn/discover-music-graphql)
 - [Frontend](https://github.com/8mn/breeze)
 
+
+# Contact
+
+If you have any questions/suggestion, Contact me 
+- My Email: `hey@mnsh.me`
+- Twitter: [@oimanish](https://twitter.com/oimanish)
 
 
