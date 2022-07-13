@@ -275,7 +275,7 @@ function App() {
 								selected={market}
 								setFilter={setMarket}
 								data={allMarkets}
-								type={"market"}
+								type={"country"}
 								setSidebarOpen={setSidebarOpen}
 							/>
 						) : (

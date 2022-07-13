@@ -40,7 +40,7 @@ const Filters = ({
 						} ${Style[type]}`}
 						onClick={() => handleClick(m)}
 					>
-						{type === "market" ? regionNames.of(m) : m}
+						{type === "country" ? regionNames.of(m) : m}
 
 						{/* {regionNames.of(m)} */}
 					</div>
