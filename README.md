@@ -65,6 +65,7 @@ open http://localhost:3000 in browser to access the app
 - [Demo](https://discover-music.vercel.app/)
 - [GraphQL endpoint(stepzen)](https://github.com/8mn/discover-music-graphql)
 - [Frontend](https://github.com/8mn/breeze)
+- [Hackathon submission](https://devpost.com/software/breeze-4rk7ye)
 
 
 # Contact
